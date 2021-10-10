@@ -1,5 +1,7 @@
 package jp.ac.hal.yoongeonung.spring_mvc.controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,4 +30,21 @@ public class HelloController {
     public String helloString(@RequestParam("name") String name) {
         return "hello " + name;
     }
+
+    // api - return object
+    @GetMapping("hello-api")
+    @ResponseBody
+    public Hello helloAPI(@RequestParam("name") String name) {
+        Hello hello = new Hello();
+        hello.setName(name);
+        return hello;
+    }
+
+    // return object
+    @Getter
+    @Setter
+    static class Hello {
+        private String name;
+    }
 }
+
