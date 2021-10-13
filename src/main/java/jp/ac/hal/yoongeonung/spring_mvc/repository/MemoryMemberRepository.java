@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
+
 public class MemoryMemberRepository implements MemberRepository {
     // 동시성 문제를 고려해 ConcurrentHashMap 사용하는게 좋다
     private static final Map<Long, Member> store = new HashMap<>();
