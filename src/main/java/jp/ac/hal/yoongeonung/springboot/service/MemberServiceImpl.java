@@ -6,6 +6,7 @@ import jp.ac.hal.yoongeonung.springboot.repository.MemoryMemberRepository;
 
 public class MemberServiceImpl implements MemberService{
 
+    //
     private final MemberRepository memberRepository = new MemoryMemberRepository();
 
     @Override
@@ -16,5 +17,10 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Member findMember(Long id) {
         return memberRepository.findById(id);
+    }
+
+    @Override
+    public void clearAll() {
+        memberRepository.clearAll();
     }
 }
