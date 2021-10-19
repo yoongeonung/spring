@@ -1,4 +1,4 @@
-package jp.ac.hal.yoongeonung.springboot.domain;
+package jp.ac.hal.yoongeonung.springboot.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

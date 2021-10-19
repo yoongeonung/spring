@@ -1,8 +1,4 @@
-package jp.ac.hal.yoongeonung.springboot.service;
-
-import jp.ac.hal.yoongeonung.springboot.domain.Member;
-import jp.ac.hal.yoongeonung.springboot.repository.MemberRepository;
-import jp.ac.hal.yoongeonung.springboot.repository.MemoryMemberRepository;
+package jp.ac.hal.yoongeonung.springboot.member;
 
 public class MemberServiceImpl implements MemberService{
 

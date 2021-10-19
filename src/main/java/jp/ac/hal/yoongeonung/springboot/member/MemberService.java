@@ -1,6 +1,6 @@
-package jp.ac.hal.yoongeonung.springboot.service;
+package jp.ac.hal.yoongeonung.springboot.member;
 
-import jp.ac.hal.yoongeonung.springboot.domain.Member;
+import jp.ac.hal.yoongeonung.springboot.member.Member;
 
 public interface MemberService {
     void join(Member member);

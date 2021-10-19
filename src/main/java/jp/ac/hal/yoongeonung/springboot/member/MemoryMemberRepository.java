@@ -1,6 +1,4 @@
-package jp.ac.hal.yoongeonung.springboot.repository;
-
-import jp.ac.hal.yoongeonung.springboot.domain.Member;
+package jp.ac.hal.yoongeonung.springboot.member;
 
 import java.util.HashMap;
 import java.util.Map;

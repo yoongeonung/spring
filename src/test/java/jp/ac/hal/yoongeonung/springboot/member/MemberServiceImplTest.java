@@ -1,9 +1,5 @@
-package jp.ac.hal.yoongeonung.springboot.service;
+package jp.ac.hal.yoongeonung.springboot.member;
 
-import jp.ac.hal.yoongeonung.springboot.domain.Grade;
-import jp.ac.hal.yoongeonung.springboot.domain.Member;
-import jp.ac.hal.yoongeonung.springboot.repository.MemberRepository;
-import jp.ac.hal.yoongeonung.springboot.repository.MemoryMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -44,4 +40,5 @@ class MemberServiceImplTest {
         Assertions.assertThat(member.getId()).isEqualTo(findMember.getId());
 
     }
+
 }
