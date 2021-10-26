@@ -6,6 +6,7 @@ import jp.ac.hal.yoongeonung.springboot.member.MemberService;
 
 public class OrderServiceImpl implements OrderService{
 
+//    DIP 위반 OCP 위반
 //    private final MemberService memberService = new MemberServiceImpl();
 //    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
 //    private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
