@@ -1,14 +1,21 @@
 package jp.ac.hal.yoongeonung.springboot.member;
 
+import jp.ac.hal.yoongeonung.springboot.AppConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MemberServiceImplTest {
 
-    private final MemberService memberService = new MemberServiceImpl();
+    private MemberService memberService;
+
+    @BeforeEach
+    void beforeEach() {
+        memberService = new AppConfig().memberService();
+    }
 
 
     @AfterEach
