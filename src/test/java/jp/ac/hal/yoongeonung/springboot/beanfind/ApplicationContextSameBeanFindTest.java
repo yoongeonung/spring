@@ -11,6 +11,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.*;
+
 public class ApplicationContextSameBeanFindTest {
 
     private final ApplicationContext ac = new AnnotationConfigApplicationContext(SameBeanConfig.class);
@@ -21,8 +25,20 @@ public class ApplicationContextSameBeanFindTest {
         Assertions.assertThrows(NoUniqueBeanDefinitionException.class, () -> ac.getBean(MemberRepository.class));
     }
 
+    @Test
+    @DisplayName("특정 타입의 빈을 모두 조회")
+    void findAllBeanBySpecificType() {
+        // map으로 나온다.
+        Map<String, MemberRepository> beansOfType = ac.getBeansOfType(MemberRepository.class);
+        beansOfType.forEach((key, value) -> {
+            assertThat(beansOfType).containsKeys(key);
+            assertThat(beansOfType).containsValue(value);
+        });
+        assertThat(beansOfType.size()).isEqualTo(2);
+    }
+
     @Configuration
-    static class SameBeanConfig{
+    static class SameBeanConfig {
         @Bean
         public MemberRepository memberRepository1() {
             return new MemoryMemberRepository();
