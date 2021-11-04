@@ -1,10 +1,13 @@
 package jp.ac.hal.yoongeonung.springboot.member;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
 //    private final MemberRepository memberRepository = new MemoryMemberRepository();
 
-    private final MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     public MemberServiceImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
