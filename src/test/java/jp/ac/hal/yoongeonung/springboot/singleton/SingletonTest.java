@@ -19,4 +19,18 @@ public class SingletonTest {
         System.out.println("memberService1 = " + memberService1);
         System.out.println("memberService2 = " + memberService2);
     }
+
+    @Test
+    @DisplayName("싱글톤 패턴")
+    void singletonServiceTest() {
+        // given
+        SingletonService singletonService1 = SingletonService.getInstance();
+        SingletonService singletonService2 = SingletonService.getInstance();
+        // when
+        // then
+        Assertions.assertThat(singletonService1).isInstanceOf(SingletonService.class);
+        // isSameAs : == 비교
+        // isEqualTo : equals를 이용한 비교
+        Assertions.assertThat(singletonService1).isSameAs(singletonService2);
+    }
 }

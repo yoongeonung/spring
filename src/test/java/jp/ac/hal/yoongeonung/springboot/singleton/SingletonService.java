@@ -10,8 +10,17 @@ public class SingletonService {
     private final static SingletonService instance = new SingletonService();
     private final static String test = "";
 
-    // 조회시 사용
+    // public으로 열어서 객체 인스턴스가 필요할시 이 메서드를 통해서만 조회 사용
     public static SingletonService getInstance() {
         return instance;
+    }
+
+    // private 생성자를 생성해서 외부에서 생성하는것을 막는다
+    private SingletonService() {
+    }
+
+    // 그냥 로직
+    private void logic() {
+        System.out.println("싱글톤 객체 로직 호출");
     }
 }
