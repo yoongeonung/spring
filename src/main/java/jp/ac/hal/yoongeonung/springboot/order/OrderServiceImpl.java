@@ -4,7 +4,10 @@ import jp.ac.hal.yoongeonung.springboot.discount.DiscountPolicy;
 import jp.ac.hal.yoongeonung.springboot.member.Member;
 import jp.ac.hal.yoongeonung.springboot.member.MemberRepository;
 import jp.ac.hal.yoongeonung.springboot.member.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderServiceImpl implements OrderService{
 
 //    DIP 위반 OCP 위반
@@ -16,6 +19,7 @@ public class OrderServiceImpl implements OrderService{
     private final DiscountPolicy discountPolicy;
     private final MemberRepository memberRepository;
 
+    @Autowired
     public OrderServiceImpl(MemberService memberService, DiscountPolicy discountPolicy, MemberRepository memberRepository) {
         this.memberService = memberService;
         this.discountPolicy = discountPolicy;

@@ -1,7 +1,10 @@
 package jp.ac.hal.yoongeonung.springboot.member;
 
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 @NoArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
@@ -9,6 +12,7 @@ public class MemberServiceImpl implements MemberService{
 
     private MemberRepository memberRepository;
 
+    @Autowired
     public MemberServiceImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
