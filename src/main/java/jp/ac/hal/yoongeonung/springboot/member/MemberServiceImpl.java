@@ -27,4 +27,9 @@ public class MemberServiceImpl implements MemberService{
     public void clearAll() {
         memberRepository.clearAll();
     }
+
+    //for test
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }

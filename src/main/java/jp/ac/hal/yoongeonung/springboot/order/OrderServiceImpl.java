@@ -2,6 +2,7 @@ package jp.ac.hal.yoongeonung.springboot.order;
 
 import jp.ac.hal.yoongeonung.springboot.discount.DiscountPolicy;
 import jp.ac.hal.yoongeonung.springboot.member.Member;
+import jp.ac.hal.yoongeonung.springboot.member.MemberRepository;
 import jp.ac.hal.yoongeonung.springboot.member.MemberService;
 
 public class OrderServiceImpl implements OrderService{
@@ -13,10 +14,12 @@ public class OrderServiceImpl implements OrderService{
 
     private final MemberService memberService;
     private final DiscountPolicy discountPolicy;
+    private final MemberRepository memberRepository;
 
-    public OrderServiceImpl(MemberService memberService, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberService memberService, DiscountPolicy discountPolicy, MemberRepository memberRepository) {
         this.memberService = memberService;
         this.discountPolicy = discountPolicy;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -24,5 +27,9 @@ public class OrderServiceImpl implements OrderService{
         Member member = memberService.findMember(memberId);
         int discountPrice = discountPolicy.discount(member, itemPrice);
         return new Order(memberId, itemName, itemPrice, discountPrice);
+    }
+
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
     }
 }
