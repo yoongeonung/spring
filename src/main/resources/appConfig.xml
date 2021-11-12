@@ -16,5 +16,6 @@
     <bean class="jp.ac.hal.yoongeonung.springboot.order.OrderServiceImpl" id="orderService">
         <constructor-arg ref="discountPolicy" name="discountPolicy" />
         <constructor-arg ref="memberService" name="memberService" />
+        <constructor-arg ref="memberRepository" name="memberRepository" />
     </bean>
 </beans>
