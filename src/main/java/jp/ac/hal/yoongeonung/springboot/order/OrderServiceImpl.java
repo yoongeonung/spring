@@ -1,14 +1,16 @@
 package jp.ac.hal.yoongeonung.springboot.order;
 
+import jp.ac.hal.yoongeonung.springboot.annotation.MainDiscountPolicy;
 import jp.ac.hal.yoongeonung.springboot.discount.DiscountPolicy;
 import jp.ac.hal.yoongeonung.springboot.member.Member;
 import jp.ac.hal.yoongeonung.springboot.member.MemberRepository;
 import jp.ac.hal.yoongeonung.springboot.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
 
 //    DIP 위반 OCP 위반
@@ -21,12 +23,12 @@ public class OrderServiceImpl implements OrderService{
     private final MemberRepository memberRepository;
 
 //    롬복으로 대체
-//    @Autowired
-//    public OrderServiceImpl(MemberService memberService, DiscountPolicy discountPolicy, MemberRepository memberRepository) {
-//        this.memberService = memberService;
-//        this.discountPolicy = discountPolicy;
-//        this.memberRepository = memberRepository;
-//    }
+    @Autowired
+    public OrderServiceImpl(MemberService memberService, @MainDiscountPolicy DiscountPolicy discountPolicy, MemberRepository memberRepository) {
+        this.memberService = memberService;
+        this.discountPolicy = discountPolicy;
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
