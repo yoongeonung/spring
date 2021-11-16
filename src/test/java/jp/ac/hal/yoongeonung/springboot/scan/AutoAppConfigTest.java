@@ -1,6 +1,7 @@
 package jp.ac.hal.yoongeonung.springboot.scan;
 
 import jp.ac.hal.yoongeonung.springboot.AutoAppConfig;
+import jp.ac.hal.yoongeonung.springboot.discount.DiscountPolicy;
 import jp.ac.hal.yoongeonung.springboot.member.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +15,6 @@ public class AutoAppConfigTest {
         //given
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class);
         //when
-        MemberService ms = ac.getBean(MemberService.class);
         //then
-        Assertions.assertThat(ms).isInstanceOf(MemberService.class);
     }
 }

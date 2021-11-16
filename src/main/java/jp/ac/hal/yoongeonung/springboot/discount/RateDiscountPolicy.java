@@ -2,9 +2,13 @@ package jp.ac.hal.yoongeonung.springboot.discount;
 
 import jp.ac.hal.yoongeonung.springboot.member.Grade;
 import jp.ac.hal.yoongeonung.springboot.member.Member;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
+//@Qualifier("mainDiscountPolicy")
+@Primary
 public class RateDiscountPolicy implements DiscountPolicy{
 
     private final int DISCOUNT_RATE = 10;
