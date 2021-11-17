@@ -5,7 +5,6 @@ import jp.ac.hal.yoongeonung.springboot.discount.DiscountPolicy;
 import jp.ac.hal.yoongeonung.springboot.member.Member;
 import jp.ac.hal.yoongeonung.springboot.member.MemberRepository;
 import jp.ac.hal.yoongeonung.springboot.member.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
