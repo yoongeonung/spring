@@ -5,7 +5,7 @@ import jp.ac.hal.yoongeonung.springboot.member.Grade;
 import jp.ac.hal.yoongeonung.springboot.member.Member;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 //@Qualifier("mainDiscountPolicy")
 //@Primary
 @MainDiscountPolicy

@@ -50,7 +50,6 @@ public class AllBeanTest {
             System.out.println("discountPrice = " + discountPrice);
             return discountPrice;
         }
-
     }
 
 }
