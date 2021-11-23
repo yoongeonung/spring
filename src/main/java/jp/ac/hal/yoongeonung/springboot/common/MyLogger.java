@@ -2,6 +2,7 @@ package jp.ac.hal.yoongeonung.springboot.common;
 
 import lombok.Setter;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +10,7 @@ import javax.annotation.PreDestroy;
 import java.util.UUID;
 
 @Component
-@Scope("request") // request scope bean
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) // request scope bean
 public class MyLogger {
     private String uuid;
     @Setter
@@ -23,11 +24,11 @@ public class MyLogger {
     @PostConstruct
     public void init() {
         uuid = UUID.randomUUID().toString();
-        System.out.println("[" + uuid + "] request scope bean create : " + this);
+        System.out.println("[" + uuid + "] request scope bean create : " + this.getClass());
     }
 
     @PreDestroy
     public void close() {
-        System.out.println("[" + uuid + "] request scope bean create : " + this);
+        System.out.println("[" + uuid + "] request scope bean close : " + this.getClass());
     }
 }
