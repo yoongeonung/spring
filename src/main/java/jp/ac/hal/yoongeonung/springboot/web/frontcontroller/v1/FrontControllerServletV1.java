@@ -1,8 +1,8 @@
-package jp.ac.hal.yoongeonung.springboot.web.frontcontroller;
+package jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1;
 
-import jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1.MemberFormControllerV1;
-import jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1.MemberListControllerV1;
-import jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1.MemberSaveControllerV1;
+import jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1.controller.MemberFormControllerV1;
+import jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1.controller.MemberListControllerV1;
+import jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1.controller.MemberSaveControllerV1;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,6 +1,6 @@
-package jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1;
+package jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1.controller;
 
-import jp.ac.hal.yoongeonung.springboot.web.frontcontroller.ControllerV1;
+import jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1.ControllerV1;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

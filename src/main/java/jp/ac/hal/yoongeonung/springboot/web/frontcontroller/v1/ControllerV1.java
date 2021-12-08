@@ -1,4 +1,4 @@
-package jp.ac.hal.yoongeonung.springboot.web.frontcontroller;
+package jp.ac.hal.yoongeonung.springboot.web.frontcontroller.v1;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
