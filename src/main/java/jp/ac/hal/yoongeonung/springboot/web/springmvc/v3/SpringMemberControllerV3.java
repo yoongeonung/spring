@@ -4,8 +4,7 @@ import jp.ac.hal.yoongeonung.springboot.domain.member.Member;
 import jp.ac.hal.yoongeonung.springboot.domain.member.MemberRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,12 +14,14 @@ public class SpringMemberControllerV3 {
 
     private final MemberRepository memberRepository = MemberRepository.getInstance();
 
-    @RequestMapping("/new-form")
+//    @RequestMapping(value = "/new-form", method = RequestMethod.GET)
+    @GetMapping("/new-form")
     public String newForm() {
         return "new-form";
     }
 
-    @RequestMapping
+//    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String members(Model model) {
         List<Member> members = memberRepository.findAll();
 //        ModelAndView mv = new ModelAndView("members");
@@ -30,8 +31,9 @@ public class SpringMemberControllerV3 {
         return "members";
     }
 
-    @RequestMapping("/save")
+    // @RequestMapping(value = "/save",method = RequestMethod.POST)
     // public ModelAndView save(HttpServletRequest request, HttpServletResponse response)
+    @PostMapping("/save")
     public String save(@RequestParam("username") String username, @RequestParam("age") int age, Model model) {
 //        String username = request.getParameter("username");
 //        int age = Integer.parseInt(request.getParameter("age"));
@@ -44,5 +46,6 @@ public class SpringMemberControllerV3 {
         model.addAttribute("member", member);
         return "save-result";
     }
+
 
 }
