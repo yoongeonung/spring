@@ -1,8 +1,10 @@
 package jp.ac.hal.yoongeonung.spring_mvc.basic.request;
 
+import jp.ac.hal.yoongeonung.spring_mvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -115,7 +117,7 @@ public class RequestParamController {
     @RequestMapping("/request-param-map")
     public String requestParamMap(
             @RequestParam Map<String, String> paramMap
-            ) {
+    ) {
         String username = paramMap.get("username");
         String age = paramMap.get("age");
         log.info("username = {} , age = {}", username, age);
@@ -132,7 +134,7 @@ public class RequestParamController {
     public String requestParamMap2(
             @RequestParam Map<String, Object> paramMap
     ) {
-        String username = (String)paramMap.get("username");
+        String username = (String) paramMap.get("username");
 //        Integer age = Integer.valueOf((String) paramMap.get("age"));
         String age = (String) paramMap.get("age");
         log.info("username = {} , age = {}", username, age);
@@ -159,5 +161,34 @@ public class RequestParamController {
             log.info("age = {}", age);
         }
         return "OK";
+    }
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+        /**
+         * @ModelAttribute가 아래의 코드를 대신해준다.
+         * 해당 객체에 프로퍼티 접근법으로 setter를 호출하여
+         * request parameter에서 받아온 값을 바인딩해준다.
+         * 참고: model.addAttribute(helloData) 코드도 함께 자동 적용됨
+         *
+         * HelloData helloData = new HelloData();
+         * helloData.setUsername(username);
+         * helloData.setAge(age);
+         */
+        log.info("helloData = {}}", helloData);
+        return "ok";
+    }
+
+    /**
+     * @ModelAttribute 생략 가능
+     * String, int 같은 단순 타입 = @RequestParam
+     * argument resolver 로 지정해둔 타입 외 = @ModelAttribute
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData) {
+        log.info("helloData = {}}", helloData);
+        return "ok";
     }
 }
