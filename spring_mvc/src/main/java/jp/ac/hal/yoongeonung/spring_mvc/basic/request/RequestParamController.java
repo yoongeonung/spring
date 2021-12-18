@@ -172,9 +172,12 @@ public class RequestParamController {
          * request parameter에서 받아온 값을 바인딩해준다.
          * 참고: model.addAttribute(helloData) 코드도 함께 자동 적용됨
          *
+         * @RequestParam String username;
+         * @RequestParam int age;
          * HelloData helloData = new HelloData();
          * helloData.setUsername(username);
          * helloData.setAge(age);
+         * model.addAttribute(helloData)
          */
         log.info("helloData = {}}", helloData);
         return "ok";
