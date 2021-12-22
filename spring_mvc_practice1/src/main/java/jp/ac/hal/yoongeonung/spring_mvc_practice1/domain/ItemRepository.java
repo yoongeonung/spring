@@ -36,4 +36,9 @@ public class ItemRepository {
         item.setPrice(updateParam.getPrice());
         item.setQuantity(updateParam.getQuantity());
     }
+
+    public void clearStore() {
+        store.clear();
+    }
+
 }
