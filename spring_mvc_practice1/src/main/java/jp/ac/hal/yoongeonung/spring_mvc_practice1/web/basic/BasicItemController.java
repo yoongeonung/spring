@@ -37,13 +37,50 @@ public class BasicItemController {
         return "basic/addForm";
     }
 
-    @PostMapping("/add")
-    public String save(@ModelAttribute ItemParamDTO params, Model model) {
+//    @PostMapping("/add")
+    public String save(
+            @RequestParam String itemName,
+            @RequestParam int price,
+            @RequestParam int quantity,
+            Model model
+    ) {
+        Item item = new Item(itemName, price, quantity);
+        itemRepository.save(item);
+        model.addAttribute("item", item);
+        return "basic/item";
+    }
+
+//    @PostMapping("/add")
+    public String saveV2(@ModelAttribute ItemParamDTO params, Model model) {
         Item item = new Item(params.getItemName(), params.getPrice(), params.getQuantity());
         Item savedItem = itemRepository.save(item);
-        System.out.println(savedItem.getId());
         model.addAttribute("item", savedItem);
         return "basic/item";
+    }
+
+//    @PostMapping("/add")
+    public String saveV3(@ModelAttribute Item item) {
+        itemRepository.save(item);
+        return "redirect:/basic/item";
+    }
+
+    @PostMapping("/add")
+    public String saveV4(@ModelAttribute Item item) {
+        itemRepository.save(item);
+        return "redirect:/basic/items/" + item.getId();
+    }
+
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute ItemParamDTO param) {
+        itemRepository.update(itemId, param);
+        return "redirect:/basic/items/{itemId}";
     }
 
     @PostConstruct
