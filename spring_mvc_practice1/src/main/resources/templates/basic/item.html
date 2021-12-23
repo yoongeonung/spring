@@ -14,6 +14,9 @@
     <div class="py-5 text-center">
       <h2>상품 상세</h2>
     </div>
+      <!--  저장 성공시 안내문  -->
+      <!--  타임리프에서는 쿼리파라미터의 속성을 param을 통해 바로가져올수 있게 해준다.   -->
+      <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
       <div>
         <label for="itemId">상품 ID</label>
         <input type="text" id="itemId" name="itemId" class="form-control" th:value="${item.id}" value="1" readonly>
