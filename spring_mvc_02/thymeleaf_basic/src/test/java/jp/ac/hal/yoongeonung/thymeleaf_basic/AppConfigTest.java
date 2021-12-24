@@ -23,8 +23,8 @@ class AppConfigTest {
                 Object bean = ac.getBean(beanDefinitionName);
                 System.out.println("name = " + beanDefinitionName + " object=" + bean);
 
-                //name = basicController.HelloBean object=jp.ac.hal.yoongeonung.thymeleaf_basic.basic.BasicController$HelloBean@5cf8edcf
-                //name = helloBean object=jp.ac.hal.yoongeonung.thymeleaf_basic.AppConfig$HelloBean@1ae8bcbc
+    //name = basicController.HelloBean
+    //name = helloBean
             }
         }
     }
