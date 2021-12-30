@@ -20,9 +20,10 @@
 
     <form action="item.html" th:object="${item}" th:action method="post">
         <div>
-            <label for="id">상품 ID</label>
-            <input type="text" th:field="*{id}" class="form-control" readonly>
-<!--        <input type="text" id="id" name="id" class="form-control" value="1" th:value="${item.id}" readonly> -->
+            <label th:for="${#ids.seq('id').replace('1','')}">상품 ID</label>
+                <input type="text" th:field="*{id}" class="form-control" readonly>
+    <!--        <input type="text" id="id" name="id" class="form-control" value="1" th:value="${item.id}" readonly> -->
+
         </div>
         <div>
             <label for="itemName">상품명</label>
@@ -40,6 +41,16 @@
         </div>
 
         <hr class="my-4">
+
+        <!-- single checkbox -->
+        <div>판매 여부</div>
+        <div>
+            <div class="form-check">
+                <label th:for="${#ids.next('open')}" class="form-check-label">판매 오픈
+                    <input type="checkbox" th:field="*{open}" class="form-check-input" />
+                </label>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col">
