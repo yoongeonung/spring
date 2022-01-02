@@ -40,13 +40,16 @@
         <div>
             <div class="form-check">
                 <!--
-                th:field가 input type이 check box인 경우에
+                th:field가 input type이 "check box"인 경우에
                 <input type="hidden"  name="_open" value="on"> 까지 자동으로 생성해준다.
                 -->
                 <label th:for="${#ids.next('open')}" class="form-check-label">판매 오픈</label>
                 <input type="checkbox" th:field="*{open}" class="form-check-input">
             </div>
         </div>
+
+        <hr class="my-4">
+
 
 
         <div class="row">

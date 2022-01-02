@@ -20,8 +20,8 @@
 
     <form action="item.html" th:object="${item}" th:action method="post">
         <div>
-            <label th:for="${#ids.seq('id').replace('1','')}">상품 ID</label>
-                <input type="text" th:field="*{id}" class="form-control" readonly>
+            <label for="id">상품 ID</label>
+                <input type="text" id="id" th:field="*{id}" class="form-control" readonly>
     <!--        <input type="text" id="id" name="id" class="form-control" value="1" th:value="${item.id}" readonly> -->
 
         </div>
@@ -31,12 +31,12 @@
         </div>
         <div>
             <label for="price">가격</label>
-            <input type="text" th:field="*{price}" class="form-control">
+            <input type="text" id="price" th:field="*{price}" class="form-control">
 <!--        <input type="text" id="price" name="price" class="form-control" value="10000" th:value="${item.price}">-->
         </div>
         <div>
             <label for="quantity">수량</label>
-            <input type="text" th:field="*{quantity}" class="form-control">
+            <input type="text" id="quantity" th:field="*{quantity}" class="form-control">
 <!--        <input type="text" id="quantity" name="quantity" class="form-control" value="10" th:value="${item.quantity}">    -->
         </div>
 
@@ -45,12 +45,27 @@
         <!-- single checkbox -->
         <div>판매 여부</div>
         <div>
+<!--
+        field와 value값을 확인해서 checked를 자동으로 넣어준다.
+-->
             <div class="form-check">
                 <label th:for="${#ids.next('open')}" class="form-check-label">판매 오픈
                     <input type="checkbox" th:field="*{open}" class="form-check-input" />
                 </label>
             </div>
         </div>
+
+        <!-- SELECT -->
+        <div>
+            <div>배송 방식</div>
+            <select th:field="*{deliveryCode}" class="form-select">
+                <option value="">==배송 방식 선택==</option>
+                <option th:each="deliveryCode : ${deliveryCodes}" th:value="${deliveryCode.code}"
+                        th:text="${deliveryCode.displayName}">FAST
+                </option>
+            </select>
+        </div>
+        <hr class="my-4">
 
         <div class="row">
             <div class="col">

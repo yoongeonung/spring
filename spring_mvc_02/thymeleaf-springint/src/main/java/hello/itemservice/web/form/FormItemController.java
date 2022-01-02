@@ -35,6 +35,7 @@ public class FormItemController {
 
     @GetMapping("/add")
     public String addForm(Model model) {
+        // th:object적용을 위해 빈객체를 넘겨준다.
         model.addAttribute("item", new Item());
         return "form/addForm";
     }
