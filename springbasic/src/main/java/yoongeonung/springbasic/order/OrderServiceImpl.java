@@ -14,16 +14,16 @@ public class OrderServiceImpl implements OrderService{
      * 제3자? -> 스프링DI컨테이너
      */
     private final DiscountPolicy discountPolicy; // OCP, DIP 만족
-    private final MemberService memberService;  // OCP, DIP 만족
+    private final MemberRepository memberRepository; // OCP, DIP 만족
 
-    public OrderServiceImpl(DiscountPolicy discountPolicy, MemberService memberService) {
+    public OrderServiceImpl(DiscountPolicy discountPolicy, MemberRepository memberRepository) {
         this.discountPolicy = discountPolicy;
-        this.memberService = memberService;
+        this.memberRepository = memberRepository;
     }
 
     @Override
     public Order createOrder(Long id, String itemName, int itemPrice) {
-        Member member = memberService.findMember(id);
+        Member member = memberRepository.findById(id);
         int discountPrice = discountPolicy.discount(member, itemPrice);
         return new Order(id, itemName, itemPrice, discountPrice);
     }
