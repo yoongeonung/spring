@@ -5,7 +5,8 @@ import yoongeonung.springbasic.member.*;
 public class OrderServiceImpl implements OrderService{
 
     private final MemberService memberService = new MemberServiceImpl();
-    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    // private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
 
     @Override
     public Order createOrder(Long id, String itemName, int itemPrice) {
