@@ -4,9 +4,22 @@ import yoongeonung.springbasic.member.*;
 
 public class OrderServiceImpl implements OrderService{
 
-    private final MemberService memberService = new MemberServiceImpl();
+    // private final MemberService memberService = new MemberServiceImpl(); // OCP, DIP 위반
     // private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
-    private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
+    // private final DiscountPolicy discountPolicy = new RateDiscountPolicy(); // OCP, DIP 위반
+
+    /**
+     * OCP, DIP 만족, 하지만 NullPointerException발생
+     * 이 문제를 해결하기 위해서는 제3자가 주입해줄 필요가 있다.
+     * 제3자? -> 스프링DI컨테이너
+     */
+    private final DiscountPolicy discountPolicy; // OCP, DIP 만족
+    private final MemberService memberService;  // OCP, DIP 만족
+
+    public OrderServiceImpl(DiscountPolicy discountPolicy, MemberService memberService) {
+        this.discountPolicy = discountPolicy;
+        this.memberService = memberService;
+    }
 
     @Override
     public Order createOrder(Long id, String itemName, int itemPrice) {

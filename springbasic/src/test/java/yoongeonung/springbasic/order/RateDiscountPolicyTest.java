@@ -5,15 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import yoongeonung.springbasic.member.Grade;
 import yoongeonung.springbasic.member.Member;
-import yoongeonung.springbasic.member.MemberService;
-import yoongeonung.springbasic.member.MemberServiceImpl;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RateDiscountPolicyTest {
 
-    private final MemberService memberService = new MemberServiceImpl();
-    private final OrderService orderService = new OrderServiceImpl();
     private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
 
     @Test
@@ -21,11 +15,10 @@ class RateDiscountPolicyTest {
     void vip() {
         //given
         Member member = new Member(1L, "Yoon", Grade.VIP);
-        memberService.join(member);
         //when
-        Order order = orderService.createOrder(1L, "Spring", 3000);
+        int discountPrice = discountPolicy.discount(member, 3000);
         //then
-        Assertions.assertThat(order.getDiscountPrice()).isEqualTo(300);
+        Assertions.assertThat(discountPrice).isEqualTo(300);
     }
 
     @Test

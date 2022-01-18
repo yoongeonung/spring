@@ -5,7 +5,20 @@ package yoongeonung.springbasic.member;
  */
 public class MemberServiceImpl implements MemberService{
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    /**
+     * OCP, DIP 위반
+     * 대신 주입해줄 제3자가 필요하다
+     */
+    // private final MemberRepository memberRepository = new MemoryMemberRepository();
+
+    /**
+     * OCP, DIP 준수
+     */
+    private final MemberRepository memberRepository;
+
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public void join(Member member) {
