@@ -24,11 +24,13 @@ public class AppConfig {
      */
     @Bean
     public MemberService memberService() {
+        System.out.println("Call AppConfig.memberService");
         return new MemberServiceImpl(memberRepository());
     }
 
     @Bean
     public OrderService orderService() {
+        System.out.println("Call AppConfig.orderService");
         return new OrderServiceImpl(discountPolicy(), memberRepository());
     }
 
@@ -43,6 +45,7 @@ public class AppConfig {
     // 중복을 제거하고, 역할에 따른 구현이 보이도록 리팩터링
     @Bean
     public MemoryMemberRepository memberRepository() {
+        System.out.println("Call AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 }
