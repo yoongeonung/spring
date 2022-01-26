@@ -1,8 +1,10 @@
 package yoongeonung.springbasic.order;
 
+import org.springframework.stereotype.Component;
 import yoongeonung.springbasic.member.Grade;
 import yoongeonung.springbasic.member.Member;
 
+@Component
 public class RateDiscountPolicy implements DiscountPolicy{
 
     /**

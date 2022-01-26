@@ -1,7 +1,10 @@
 package yoongeonung.springbasic.order;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import yoongeonung.springbasic.member.*;
 
+@Component
 public class OrderServiceImpl implements OrderService{
 
     // private final MemberService memberService = new MemberServiceImpl(); // OCP, DIP 위반
@@ -16,6 +19,7 @@ public class OrderServiceImpl implements OrderService{
     private final DiscountPolicy discountPolicy; // OCP, DIP 만족
     private final MemberRepository memberRepository; // OCP, DIP 만족
 
+    @Autowired
     public OrderServiceImpl(DiscountPolicy discountPolicy, MemberRepository memberRepository) {
         this.discountPolicy = discountPolicy;
         this.memberRepository = memberRepository;
