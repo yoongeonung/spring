@@ -16,12 +16,24 @@ public class OrderServiceImpl implements OrderService{
      * 이 문제를 해결하기 위해서는 제3자가 주입해줄 필요가 있다.
      * 제3자? -> 스프링DI컨테이너
      */
-    private final DiscountPolicy discountPolicy; // OCP, DIP 만족
-    private final MemberRepository memberRepository; // OCP, DIP 만족
+    private DiscountPolicy discountPolicy; // OCP, DIP 만족
+    private MemberRepository memberRepository; // OCP, DIP 만족
 
-    @Autowired
+//    @Autowired // 생성자가 클래스내에 1개이고 스프링빈일시 @Autowired 생략가능
     public OrderServiceImpl(DiscountPolicy discountPolicy, MemberRepository memberRepository) {
         this.discountPolicy = discountPolicy;
+        this.memberRepository = memberRepository;
+    }
+
+    @Autowired // setter注入
+    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
+        System.out.println("setter discountPolicy = " + discountPolicy);
+        this.discountPolicy = discountPolicy;
+    }
+
+    @Autowired // setter注入
+    public void setMemberRepository(MemberRepository memberRepository) {
+        System.out.println("setter memberRepository = " + memberRepository);
         this.memberRepository = memberRepository;
     }
 
