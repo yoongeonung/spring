@@ -19,12 +19,18 @@ public class OrderServiceImpl implements OrderService{
     private DiscountPolicy discountPolicy; // OCP, DIP 만족
     private MemberRepository memberRepository; // OCP, DIP 만족
 
-//    @Autowired // 생성자가 클래스내에 1개이고 스프링빈일시 @Autowired 생략가능
+    @Autowired // 생성자가 클래스내에 1개이고 스프링빈일시 @Autowired 생략가능
     public OrderServiceImpl(DiscountPolicy discountPolicy, MemberRepository memberRepository) {
+        System.out.println("constructor discountPolicy = " + discountPolicy);
+        System.out.println("constructor memberRepository = " + memberRepository);
         this.discountPolicy = discountPolicy;
         this.memberRepository = memberRepository;
     }
 
+    /**
+     * 생성자 주입과 셋터 주입 둘다 있을경우
+     * 설령 주입되는 내용물이 같다고 하더라도 둘다 주입된다.
+     */
     @Autowired // setter注入
     public void setDiscountPolicy(DiscountPolicy discountPolicy) {
         System.out.println("setter discountPolicy = " + discountPolicy);
