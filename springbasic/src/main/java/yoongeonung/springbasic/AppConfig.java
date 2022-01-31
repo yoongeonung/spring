@@ -31,15 +31,14 @@ public class AppConfig {
     @Bean
     public OrderService orderService() {
         System.out.println("Call AppConfig.orderService");
-//        return new OrderServiceImpl(discountPolicy(), memberRepository());
-        return null;
+        return new OrderServiceImpl(discountPolicy(), memberRepository());
     }
 
     // 역할의 명확화. 메서드로 독립시킴으로서 어떤 역할을 하는지 확실히 할 수 있다.
     @Bean
     public DiscountPolicy discountPolicy() {
-//        return new FixDiscountPolicy();
-        return new RateDiscountPolicy();
+        return new FixDiscountPolicy();
+//        return new RateDiscountPolicy();
     }
 
     // 역할의 명확화. 메서드로 독립시킴으로서 어떤 역할을 하는지 확실히 할 수 있다.
