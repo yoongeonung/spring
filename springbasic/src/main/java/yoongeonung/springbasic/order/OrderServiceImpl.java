@@ -1,10 +1,13 @@
 package yoongeonung.springbasic.order;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import yoongeonung.springbasic.member.*;
 
 @Component
+//@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
 
     // private final MemberService memberService = new MemberServiceImpl(); // OCP, DIP 위반
@@ -17,11 +20,12 @@ public class OrderServiceImpl implements OrderService{
      * 제3자? -> 스프링DI컨테이너
      */
 
-    private DiscountPolicy discountPolicy; // OCP, DIP 만족
-    private MemberRepository memberRepository; // OCP, DIP 만족
+    private final DiscountPolicy discountPolicy; // OCP, DIP 만족
+    private final MemberRepository memberRepository; // OCP, DIP 만족
 
+//    Lombok의 @RequiredArgsConstructor를 사용해서 생성자 생략가능
     @Autowired // 생성자가 클래스내에 1개이고 스프링빈일시 @Autowired 생략가능
-    public OrderServiceImpl(DiscountPolicy discountPolicy, MemberRepository memberRepository) {
+    public OrderServiceImpl(@Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy, MemberRepository memberRepository) {
         System.out.println("constructor discountPolicy = " + discountPolicy);
         System.out.println("constructor memberRepository = " + memberRepository);
         this.discountPolicy = discountPolicy;
