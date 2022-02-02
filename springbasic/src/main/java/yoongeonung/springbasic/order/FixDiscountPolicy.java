@@ -6,7 +6,6 @@ import yoongeonung.springbasic.member.Grade;
 import yoongeonung.springbasic.member.Member;
 
 @Component
-@Qualifier("fixDiscountPolicy")
 public class FixDiscountPolicy implements DiscountPolicy{
 
     private final int DISCOUNT_FIX_AMOUNT = 1000;

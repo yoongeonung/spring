@@ -1,12 +1,15 @@
 package yoongeonung.springbasic.order;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import yoongeonung.springbasic.annotation.MainDiscountPolicy;
 import yoongeonung.springbasic.member.Grade;
 import yoongeonung.springbasic.member.Member;
 
+//@Primary
+@MainDiscountPolicy
 @Component
-@Qualifier("mainDiscountPolicy")
 public class RateDiscountPolicy implements DiscountPolicy{
 
     /**
