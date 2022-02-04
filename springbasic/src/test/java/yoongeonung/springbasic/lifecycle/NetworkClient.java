@@ -1,10 +1,8 @@
 package yoongeonung.springbasic.lifecycle;
 
 import lombok.Setter;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 
-public class NetworkClient implements InitializingBean, DisposableBean {
+public class NetworkClient {
     @Setter
     private String url;
 
@@ -24,13 +22,19 @@ public class NetworkClient implements InitializingBean, DisposableBean {
         System.out.println("close : " + url);
     }
 
-    @Override
-    public void destroy() throws Exception {
+    public void shutdown() {
+        System.out.println("NetworkClient.shutdown");
         disconnect();
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+
+    public void close() {
+        System.out.println("NetworkClient.close");
+        disconnect();
+    }
+
+
+    public void init() {
         connect();
         call("초기화 연결 메시지");
     }
