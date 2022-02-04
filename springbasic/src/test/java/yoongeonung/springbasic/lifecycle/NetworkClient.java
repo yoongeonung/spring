@@ -2,6 +2,9 @@ package yoongeonung.springbasic.lifecycle;
 
 import lombok.Setter;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 public class NetworkClient {
     @Setter
     private String url;
@@ -22,18 +25,13 @@ public class NetworkClient {
         System.out.println("close : " + url);
     }
 
-    public void shutdown() {
-        System.out.println("NetworkClient.shutdown");
-        disconnect();
-    }
-
-
+    @PreDestroy
     public void close() {
         System.out.println("NetworkClient.close");
         disconnect();
     }
 
-
+    @PostConstruct
     public void init() {
         connect();
         call("초기화 연결 메시지");
