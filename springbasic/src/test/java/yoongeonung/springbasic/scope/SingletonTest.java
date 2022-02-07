@@ -24,7 +24,6 @@ public class SingletonTest {
         ac.close();
     }
 
-
     @Scope("singleton")
     static class SingletonBean {
         @PostConstruct
