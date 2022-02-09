@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
@@ -36,18 +35,17 @@ public class PrototypeProviderTest {
 //        private final ApplicationContext ac;
         private final ObjectProvider<PrototypeBean> provider;
 
-
         public int logic() {
             // 필요시마다 컨테이너에 직접 요청 -> 이런 방법을 Dependency Lookup (DL) 이라고 한다.
-//            PrototypeBean bean = ac.getBean(PrototypeBean.class);
             PrototypeBean prototypeBean = provider.getObject();
+            System.out.println("prototypeBean = " + prototypeBean);
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }
     }
 
 
-    @Scope("prototype")
+    @Scope(value = "prototype")
     static class PrototypeBean {
         @Getter
         private int count = 0;
@@ -58,7 +56,7 @@ public class PrototypeProviderTest {
 
         @PostConstruct
         public void init() {
-            System.out.println("PrototypeBean.init" + this);
+            System.out.println("PrototypeBean.init : " + this);
         }
 
         @PreDestroy

@@ -14,8 +14,11 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.projectlombok:lombok:1.18.22'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // lombok
+    implementation 'org.projectlombok:lombok:1.18.22'
+    // web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
 test {

@@ -1,13 +1,10 @@
 package yoongeonung.springbasic;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import yoongeonung.springbasic.member.MemberRepository;
-import yoongeonung.springbasic.member.MemoryMemberRepository;
 
-import static org.springframework.context.annotation.ComponentScan.*;
+import static org.springframework.context.annotation.ComponentScan.Filter;
 
 @Configuration
 @ComponentScan(excludeFilters = @Filter(type = FilterType.ANNOTATION, classes = Configuration.class))
