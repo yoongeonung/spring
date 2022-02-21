@@ -13,5 +13,11 @@ public class DaoMain {
 
         userDao.add(user);
         System.out.println(user.getId() + " 등록 성공");
+
+        User user2 = userDao.get("11");
+        System.out.println("user2.getId() = " + user2.getId());
+        System.out.println("user2.getName() = " + user2.getName());
+
+        System.out.println(user2.getId() + " 조회 성공");
     }
 }
