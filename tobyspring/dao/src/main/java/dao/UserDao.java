@@ -4,11 +4,19 @@ import domain.User;
 
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
+
+    private static SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDao() {
+        simpleConnectionMaker = new SimpleConnectionMaker();
+    }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
         // 중복 제거, 메소드로 추출
-        Connection c = getConnection();
+//        Connection c = getConnection();
+        // 추상클래스를 제거, 클래스로 분리후 참조
+        Connection c = simpleConnectionMaker.makeNewConnection();
         PreparedStatement ps = c.prepareStatement( "insert into user(id, name, password) values(?,?,?)");
         ps.setString(1, user.getId());
         ps.setString(2, user.getName());
@@ -21,7 +29,8 @@ public abstract class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException{
-        Connection c = getConnection();
+//        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.makeNewConnection();
         PreparedStatement ps = c.prepareStatement("select * from user where id = ?");
         ps.setString(1, id);
 
@@ -46,5 +55,5 @@ public abstract class UserDao {
 //        return c;
 //    }
     // 관심사의 분리 + 추상화
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
+//    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }
