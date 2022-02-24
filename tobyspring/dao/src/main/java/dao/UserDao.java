@@ -4,7 +4,7 @@ import domain.User;
 
 import java.sql.*;
 
-public class UserDao {
+public abstract class UserDao {
 
     public void add(User user) throws ClassNotFoundException, SQLException {
         // 중복 제거, 메소드로 추출
@@ -40,9 +40,11 @@ public class UserDao {
     }
 
     // 관심사의 분리
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection c = DriverManager.getConnection("jdbc:mysql://localhost/tobyspring", "root", "00000000");
-        return c;
-    }
+//    private Connection getConnection() throws ClassNotFoundException, SQLException {
+//        Class.forName("com.mysql.cj.jdbc.Driver");
+//        Connection c = DriverManager.getConnection("jdbc:mysql://localhost/tobyspring", "root", "00000000");
+//        return c;
+//    }
+    // 관심사의 분리 + 추상화
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }
