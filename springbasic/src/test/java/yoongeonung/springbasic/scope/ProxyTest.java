@@ -13,11 +13,13 @@ public class ProxyTest {
     @Test
     @DisplayName("프록시 객체는 애플리케이션 실행시 컨테이너에 등록되는가?")
     void proxyFindTest() {
-        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(ProxyProto.class);
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(ProxyWeb.class,ProxyProto.class);
+        ProxyWeb bean = ac.getBean(ProxyWeb.class);
+        System.out.println("bean.getClass() = " + bean.getClass());
         String[] beanDefinitionNames = ac.getBeanDefinitionNames();
         for (String name : beanDefinitionNames) {
-            Object bean = ac.getBean(name);
-            System.out.println("bean = " + bean.getClass());
+            Object object = ac.getBean(name);
+            System.out.println("object = " + object.getClass());
         }
     }
 
