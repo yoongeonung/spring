@@ -2,11 +2,22 @@ package user.dao;
 
 import user.domain.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public abstract class UserDao {
+public class UserDao {
+
+    private final SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDao() {
+        simpleConnectionMaker = new SimpleConnectionMaker();
+    }
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+//        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.makeNewConnection();
 
         PreparedStatement ps = c.prepareStatement("insert into USER (id, name, password) values (?,?,?)");
         ps.setString(1, user.getId());
@@ -20,7 +31,8 @@ public abstract class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+//        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.makeNewConnection();
 
         PreparedStatement ps = c.prepareStatement("select * from USER where id = ?");
         ps.setString(1, id);
@@ -39,11 +51,11 @@ public abstract class UserDao {
         return user;
     }
     // extract method
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
+//    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        UserDao dao = new UserDao();
-        UserDao dao = new NUserDao();
+        UserDao dao = new UserDao();
+//        UserDao dao = new NUserDao();
 
         User user = new User();
         user.setId("1");
