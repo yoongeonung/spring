@@ -15,7 +15,15 @@ public class UserDao {
     public UserDao(ConnectionMaker connectionMaker) {
 //        simpleConnectionMaker = new SimpleConnectionMaker();
 //        connectionMaker = new DConnectionMaker();
-        this.connectionMaker = connectionMaker;
+        this.connectionMaker = connectionMaker; // DI
+
+        /*
+        * Dependency Lookup -> 컨테이너로부터 직접 찾아오는것
+        * 스프링에서는 getBean() 메소드를 이용해서 DL 가능
+
+        DaoFactory factory = new DaoFactory();
+        this.connectionMaker = factory.connectionMaker();
+         */
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
