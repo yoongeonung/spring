@@ -1,5 +1,7 @@
 package user.dao;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import user.domain.User;
 
 import java.sql.SQLException;
@@ -10,9 +12,13 @@ public class UserDaoTest {
 //        ConnectionMaker connectionMaker = new DConnectionMaker();
 //        UserDao dao = new UserDao(connectionMaker);
         // factory 클래스로 분리
-        DaoFactory daoFactory = new DaoFactory();
-        UserDao dao = daoFactory.userDao();
+//        DaoFactory daoFactory = new DaoFactory();
+//        UserDao dao = daoFactory.userDao();
 //        UserDao dao = new NUserDao();
+
+        // 스프링 적용
+        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
+        UserDao dao = ac.getBean("userDao", UserDao.class);
 
         User user = new User();
         user.setId("1");
