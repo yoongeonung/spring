@@ -2,9 +2,12 @@ package user.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import user.domain.User;
 
 import java.sql.SQLException;
@@ -12,6 +15,8 @@ import java.sql.SQLException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {DaoFactory.class})
 class UserDaoTest {
 
     private UserDao dao;
@@ -19,9 +24,16 @@ class UserDaoTest {
     private User naver;
     private User line;
 
+    @Autowired
+    private ApplicationContext ac;
+
     @BeforeEach
     void beforeEach() {
-        final ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
+//        final ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
+//        this.ac = new AnnotationConfigApplicationContext(DaoFactory.class); // test용
+        System.out.println(" Application Context = " + this.ac);
+        System.out.println(" this = " + this);
+
         this.dao = ac.getBean("userDao", UserDao.class);
 
         this.wooah = new User("1", "우형", "1234");
