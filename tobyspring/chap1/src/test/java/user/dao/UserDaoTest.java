@@ -16,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {DaoFactory.class})
+@ContextConfiguration(classes = {TestDaoFactory.class})
+//@DirtiesContext
 class UserDaoTest {
 
     private UserDao dao;
@@ -31,10 +32,14 @@ class UserDaoTest {
     void beforeEach() {
 //        final ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
 //        this.ac = new AnnotationConfigApplicationContext(DaoFactory.class); // test용
+
+//        DataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost/tobyspring", "root", "00000000", true);
+
         System.out.println(" Application Context = " + this.ac);
         System.out.println(" this = " + this);
 
-        this.dao = ac.getBean("userDao", UserDao.class);
+//        dao.setDataSource(dataSource);
+        dao = ac.getBean("userDao", UserDao.class);
 
         this.wooah = new User("1", "우형", "1234");
         this.naver = new User("2", "네이버", "1234");

@@ -1,8 +1,11 @@
 package user.dao;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import user.domain.User;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +15,8 @@ public class UserDao {
 
     //    private final SimpleConnectionMaker connectionMaker;
     private final ConnectionMaker connectionMaker;
+    @Setter @Getter
+    private DataSource dataSource;
 
     public UserDao(ConnectionMaker connectionMaker) {
 //        simpleConnectionMaker = new SimpleConnectionMaker();
