@@ -2,6 +2,7 @@ package user.dao;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import user.domain.User;
 
 import java.sql.SQLException;
@@ -20,7 +21,10 @@ public class UserDaoTest {
 //        System.out.println("dao2 = " + dao2);
 
         // 스프링 적용
-        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
+        // 자바 코드를 이용한 설정정보 사용
+//        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
+        // xml 파일을 이용한 설정정보 사용
+        ApplicationContext ac = new GenericXmlApplicationContext("applicationContext.xml");
         UserDao dao = ac.getBean("userDao", UserDao.class); // 동일 오브젝트 (싱글톤)
 //        UserDao dao3 = ac.getBean("userDao", UserDao.class); // 동일 오브젝트 (싱글톤)
 //        UserDao dao4 = ac.getBean("userDao", UserDao.class); // 동일 오브젝트 (싱글톤)

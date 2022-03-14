@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import user.domain.User;
@@ -18,8 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestDaoFactory.class})
-//@DirtiesContext
+//@ContextConfiguration(classes = {TestDaoFactory.class})
+@ContextConfiguration(locations = "/applicationContext.xml")
+@DirtiesContext
 class UserDaoTest {
 
     private UserDao dao;
@@ -40,7 +42,7 @@ class UserDaoTest {
         System.out.println(" Application Context = " + this.ac);
         System.out.println(" this = " + this);
 
-//        dao.setDataSource(dataSource);
+        dao.setDataSource(dataSource);
         dao = ac.getBean("userDao", UserDao.class);
 
         this.wooah = new User("1", "우형", "1234");
