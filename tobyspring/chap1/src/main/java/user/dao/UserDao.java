@@ -1,6 +1,7 @@
 package user.dao;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import user.domain.User;
@@ -11,17 +12,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@NoArgsConstructor
 public class UserDao {
 
     //    private final SimpleConnectionMaker connectionMaker;
-    private final ConnectionMaker connectionMaker;
-    @Setter @Getter
-    private DataSource dataSource;
+    @Setter
+    private ConnectionMaker connectionMaker;
 
     public UserDao(ConnectionMaker connectionMaker) {
 //        simpleConnectionMaker = new SimpleConnectionMaker();
 //        connectionMaker = new DConnectionMaker();
-        this.connectionMaker = connectionMaker; // DI
+        this.connectionMaker = connectionMaker; // 생성자 DI
 
         /*
         * Dependency Lookup -> 컨테이너로부터 직접 찾아오는것
