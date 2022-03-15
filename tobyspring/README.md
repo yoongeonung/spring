@@ -8,4 +8,4 @@
 
 # 3장 템플릿
 
-[템플릿](/Users/yoongeonung/Code/Java/spring/tobyspring/template.md)
+[템플릿](https://github.com/yoongeonung/spring_mvc/blob/main/tobyspring/template.md)
