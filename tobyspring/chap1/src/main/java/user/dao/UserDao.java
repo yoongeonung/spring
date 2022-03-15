@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @NoArgsConstructor
-public abstract class UserDao {
+public class UserDao {
 
     //    private final SimpleConnectionMaker connectionMaker;
     @Setter
@@ -38,17 +38,8 @@ public abstract class UserDao {
 //        Connection c = getConnection();
 //        Connection c = simpleConnectionMaker.makeNewConnection();
 //        Connection c = connectionMaker.makeConnection();
-        Connection c = dataSource.getConnection();
-
-        PreparedStatement ps = c.prepareStatement("insert into USER (id, name, password) values (?,?,?)");
-        ps.setString(1, user.getId());
-        ps.setString(2, user.getName());
-        ps.setString(3, user.getPassword());
-
-        ps.executeUpdate();
-
-        ps.close();
-        c.close();
+        StatementStrategy strategy = new AddStatement(user);
+        jdbcContextWithStatementStrategy(strategy);
     }
 
     public User get(String id) throws SQLException {
@@ -116,7 +107,7 @@ public abstract class UserDao {
 
     // 변하는 부분을 변하지 않는부분으로부터 추출;
     // 템플릿 메소드 패턴을 적용 추상메소드로 변환
-    public abstract PreparedStatement makeStatement(Connection c) throws SQLException;
+//    public abstract PreparedStatement makeStatement(Connection c) throws SQLException;
 
     public int getCount() throws SQLException {
 //        Connection c = connectionMaker.makeConnection();
