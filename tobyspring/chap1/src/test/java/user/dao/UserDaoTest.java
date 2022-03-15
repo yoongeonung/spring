@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 //@ContextConfiguration(classes = {TestDaoFactory.class})
-@ContextConfiguration(locations = "/applicationContext.xml")
+@ContextConfiguration(locations = "/test-applicationContext.xml")
 @DirtiesContext
 class UserDaoTest {
 
@@ -52,7 +52,7 @@ class UserDaoTest {
 
 
     @Test
-    void addAndGet() throws SQLException, ClassNotFoundException {
+    void addAndGet() throws SQLException {
         User kakao = new User("1", "카카오", "1234");
         User line = new User("2", "라인", "1234");
 
@@ -75,7 +75,7 @@ class UserDaoTest {
     }
 
     @Test
-    void count() throws SQLException, ClassNotFoundException {
+    void count() throws SQLException {
 
 
         dao.deleteAll();
@@ -92,7 +92,7 @@ class UserDaoTest {
     }
 
     @Test
-    void getUserFailure() throws SQLException, ClassNotFoundException {
+    void getUserFailure() throws SQLException {
         dao.deleteAll();
         assertThat(dao.getCount()).isEqualTo(0);
 

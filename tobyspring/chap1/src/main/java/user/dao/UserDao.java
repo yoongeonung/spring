@@ -19,6 +19,9 @@ public class UserDao {
     private ConnectionMaker connectionMaker;
     @Setter
     private DataSource dataSource;
+    @Setter
+    private JdbcContext jdbcContext;
+
 
     public UserDao(ConnectionMaker connectionMaker) {
 //        simpleConnectionMaker = new SimpleConnectionMaker();
@@ -34,12 +37,47 @@ public class UserDao {
          */
     }
 
-    public void add(User user) throws SQLException {
+    public void add(final User user) throws SQLException {
 //        Connection c = getConnection();
 //        Connection c = simpleConnectionMaker.makeNewConnection();
 //        Connection c = connectionMaker.makeConnection();
-        StatementStrategy strategy = new AddStatement(user);
-        jdbcContextWithStatementStrategy(strategy);
+
+        // 로컬클래스로 변경
+//        class AddStatement implements StatementStrategy {
+//            @Override
+//            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+//                PreparedStatement ps = c.prepareStatement("insert into USER (id, name, password) values (?,?,?)");
+//                ps.setString(1, user.getId());
+//                ps.setString(2, user.getName());
+//                ps.setString(3, user.getPassword());
+//                return ps;
+//            }
+//        }
+
+        // 익명 클래스로 변경
+//        StatementStrategy strategy = new AddStatement();
+//        jdbcContextWithStatementStrategy(new StatementStrategy() {
+//            @Override
+//            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+//                PreparedStatement ps = c.prepareStatement("insert into USER (id, name, password) values (?,?,?)");
+//                ps.setString(1, user.getId());
+//                ps.setString(2, user.getName());
+//                ps.setString(3, user.getPassword());
+//                return ps;
+//            }
+//        });
+
+        jdbcContext.workWithStatementStrategy(new StatementStrategy() {
+            @Override
+            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                PreparedStatement ps = c.prepareStatement("insert into USER (id, name, password) values (?,?,?)");
+                ps.setString(1, user.getId());
+                ps.setString(2, user.getName());
+                ps.setString(3, user.getPassword());
+                return ps;
+            }
+        });
+
     }
 
     public User get(String id) throws SQLException {
@@ -74,36 +112,54 @@ public class UserDao {
     // 클라이언트
     public void deleteAll() throws SQLException {
 //        Connection c = connectionMaker.makeConnection();
-        jdbcContextWithStatementStrategy(new DeleteAllStatement());
+//        jdbcContextWithStatementStrategy(new StatementStrategy() {
+//            @Override
+//            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+//                return c.prepareStatement("delete from USER");
+//            }
+//        });
+        jdbcContext.executeSQL("delete from USER");
+
     }
+
+    // 템플릿으로 이전
+//    private void executeSQL(final String sql) throws SQLException {
+//        jdbcContext.workWithStatementStrategy(new StatementStrategy() {
+//            @Override
+//            public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+//                return c.prepareStatement("delete from USER");
+//            }
+//        });
+//    }
 
     // 컨텍스트를 분리, 클라이언트가 전략을 선택하게끔 변경
-    private void jdbcContextWithStatementStrategy(StatementStrategy strategy) throws SQLException {
-        Connection c = null;
-        PreparedStatement ps = null;
-
-        try {
-            c = dataSource.getConnection();
-//            ps = makeStatement(c);
-            ps = strategy.makePreparedStatement(c);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close(); // 여기서도 exception이 발생 가능하므로 잡아줘야 한다.
-                } catch (SQLException e) {
-                }
-            }
-            if (c != null) {
-                try {
-                    c.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-    }
+    // 별도 클래스로 분리
+//    private void jdbcContextWithStatementStrategy(StatementStrategy strategy) throws SQLException {
+//        Connection c = null;
+//        PreparedStatement ps = null;
+//
+//        try {
+//            c = dataSource.getConnection();
+////            ps = makeStatement(c);
+//            ps = strategy.makePreparedStatement(c);
+//            ps.executeUpdate();
+//        } catch (SQLException e) {
+//            throw e;
+//        } finally {
+//            if (ps != null) {
+//                try {
+//                    ps.close(); // 여기서도 exception이 발생 가능하므로 잡아줘야 한다.
+//                } catch (SQLException e) {
+//                }
+//            }
+//            if (c != null) {
+//                try {
+//                    c.close();
+//                } catch (SQLException e) {
+//                }
+//            }
+//        }
+//    }
 
     // 변하는 부분을 변하지 않는부분으로부터 추출;
     // 템플릿 메소드 패턴을 적용 추상메소드로 변환
