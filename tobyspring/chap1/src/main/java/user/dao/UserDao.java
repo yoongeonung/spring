@@ -1,6 +1,5 @@
 package user.dao;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @NoArgsConstructor
-public class UserDao {
+public abstract class UserDao {
 
     //    private final SimpleConnectionMaker connectionMaker;
     @Setter
@@ -81,15 +80,21 @@ public class UserDao {
         return user;
     }
 
+    // 클라이언트
     public void deleteAll() throws SQLException {
 //        Connection c = connectionMaker.makeConnection();
+        jdbcContextWithStatementStrategy(new DeleteAllStatement());
+    }
 
+    // 컨텍스트를 분리, 클라이언트가 전략을 선택하게끔 변경
+    private void jdbcContextWithStatementStrategy(StatementStrategy strategy) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
 
         try {
             c = dataSource.getConnection();
-            ps = c.prepareStatement("delete from USER");
+//            ps = makeStatement(c);
+            ps = strategy.makePreparedStatement(c);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -100,19 +105,18 @@ public class UserDao {
                 } catch (SQLException e) {
                 }
             }
-
             if (c != null) {
                 try {
                     c.close();
                 } catch (SQLException e) {
                 }
             }
-
         }
-
-
-
     }
+
+    // 변하는 부분을 변하지 않는부분으로부터 추출;
+    // 템플릿 메소드 패턴을 적용 추상메소드로 변환
+    public abstract PreparedStatement makeStatement(Connection c) throws SQLException;
 
     public int getCount() throws SQLException {
 //        Connection c = connectionMaker.makeConnection();
@@ -128,7 +132,7 @@ public class UserDao {
             return rs.getInt(1);
         } catch (SQLException e) {
             throw e;
-        }finally {
+        } finally {
             if (rs != null) {
                 try {
                     rs.close();
