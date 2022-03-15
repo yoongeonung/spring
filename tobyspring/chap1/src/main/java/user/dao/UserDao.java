@@ -83,12 +83,35 @@ public class UserDao {
 
     public void deleteAll() throws SQLException {
 //        Connection c = connectionMaker.makeConnection();
-        Connection c = dataSource.getConnection();
-        PreparedStatement ps = c.prepareStatement("delete from USER");
-        ps.executeUpdate();
 
-        ps.close();
-        c.close();
+        Connection c = null;
+        PreparedStatement ps = null;
+
+        try {
+            c = dataSource.getConnection();
+            ps = c.prepareStatement("delete from USER");
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close(); // 여기서도 exception이 발생 가능하므로 잡아줘야 한다.
+                } catch (SQLException e) {
+                }
+            }
+
+            if (c != null) {
+                try {
+                    c.close();
+                } catch (SQLException e) {
+                }
+            }
+
+        }
+
+
+
     }
 
     public int getCount() throws SQLException {
