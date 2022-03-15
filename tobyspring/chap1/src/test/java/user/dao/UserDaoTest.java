@@ -42,8 +42,8 @@ class UserDaoTest {
         System.out.println(" Application Context = " + this.ac);
         System.out.println(" this = " + this);
 
-        dao.setDataSource(dataSource);
         dao = ac.getBean("userDao", UserDao.class);
+        dao.setDataSource(dataSource);
 
         this.wooah = new User("1", "우형", "1234");
         this.naver = new User("2", "네이버", "1234");
