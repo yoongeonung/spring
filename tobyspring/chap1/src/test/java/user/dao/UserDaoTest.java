@@ -14,6 +14,7 @@ import user.domain.User;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,9 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserDaoTest {
 
     private UserDao dao;
-    private User wooah;
-    private User naver;
-    private User line;
+//    private User wooah;
+//    private User naver;
+//    private User line;
 
     @Autowired
     private ApplicationContext ac;
@@ -45,9 +46,9 @@ class UserDaoTest {
         dao = ac.getBean("userDao", UserDao.class);
         dao.setDataSource(dataSource);
 
-        this.wooah = new User("1", "우형", "1234");
-        this.naver = new User("2", "네이버", "1234");
-        this.line = new User("3", "라인", "1234");
+//        this.wooah = new User("1", "우형", "1234");
+//        this.naver = new User("2", "네이버", "1234");
+//        this.line = new User("3", "라인", "1234");
     }
 
 
@@ -78,17 +79,17 @@ class UserDaoTest {
     void count() throws SQLException {
 
 
-        dao.deleteAll();
-        assertThat(dao.getCount()).isEqualTo(0);
-
-        dao.add(wooah);
-        assertThat(dao.getCount()).isEqualTo(1);
-
-        dao.add(naver);
-        assertThat(dao.getCount()).isEqualTo(2);
-
-        dao.add(line);
-        assertThat(dao.getCount()).isEqualTo(3);
+//        dao.deleteAll();
+//        assertThat(dao.getCount()).isEqualTo(0);
+//
+//        dao.add(wooah);
+//        assertThat(dao.getCount()).isEqualTo(1);
+//
+//        dao.add(naver);
+//        assertThat(dao.getCount()).isEqualTo(2);
+//
+//        dao.add(line);
+//        assertThat(dao.getCount()).isEqualTo(3);
     }
 
     @Test
@@ -97,6 +98,55 @@ class UserDaoTest {
         assertThat(dao.getCount()).isEqualTo(0);
 
         assertThrows(EmptyResultDataAccessException.class, () -> dao.get("unknown_id"));
+    }
+
+    @Test
+    void getAll() throws SQLException {
+        dao.deleteAll();
+
+        User user1 = new User();
+        user1.setId("ccc");
+        user1.setName("kakao");
+        user1.setPassword("pangyo");
+        dao.add(user1);
+
+        List<User> users1 = dao.getAll();
+        assertThat(users1.size()).isEqualTo(1);
+        checkSameUser(user1, users1.get(0));
+
+        User user2 = new User();
+        user2.setId("bbb");
+        user2.setName("line");
+        user2.setPassword("bundang");
+        dao.add(user2);
+
+        List<User> users2 = dao.getAll();
+        assertThat(users2.size()).isEqualTo(2);
+        checkSameUser(user2, users2.get(0));
+
+        User user3 = new User();
+        user3.setId("aaa");
+        user3.setName("naver");
+        user3.setPassword("bundang");
+        dao.add(user3);
+
+        List<User> users3 = dao.getAll();
+        assertThat(users3.size()).isEqualTo(3);
+        checkSameUser(user3, users3.get(0));
+
+
+        List<User> users = dao.getAll();
+        assertThat(users.size()).isEqualTo(3);
+        checkSameUser(users.get(0), user3);
+        checkSameUser(users.get(1), user2);
+        checkSameUser(users.get(2), user1);
+
+    }
+
+    private void checkSameUser(User user1, User user2) {
+        assertThat(user1.getId()).isEqualTo(user2.getId());
+        assertThat(user1.getName()).isEqualTo(user2.getName());
+        assertThat(user1.getPassword()).isEqualTo(user2.getPassword());
     }
 
 }
