@@ -2,9 +2,11 @@
 
 # 1장 오브젝트와 의존관계
 
+[오브젝트와 의존관계](https://github.com/yoongeonung/spring_mvc/blob/main/tobyspring/objectanddependency.md)
+
 # 2장 테스트
 
-[테스트]()
+[테스트](https://github.com/yoongeonung/spring_mvc/blob/main/tobyspring/test.md)
 
 # 3장 템플릿
 
@@ -12,13 +14,17 @@
 
 # 4장 예외
 
+[예외](https://github.com/yoongeonung/spring_mvc/blob/main/tobyspring/exception.md)
+
 # 5장 서비스 추상화
+
+[서비스 추상화]()
 
 ---
 
 # トビーの Spring
 
-- 勉強しながら整理したノートを日本語に変えてアップする予定です。（日本語の勉強を兼ねて）
+- 勉強しながら整理したノートを日本語に変えてアップする予定です。（日本語の勉強と復習を兼ねて）
 
 # 第一章　オブジェクトと依存関係
 
