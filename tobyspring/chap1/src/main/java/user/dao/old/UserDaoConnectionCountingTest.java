@@ -1,14 +1,15 @@
-package user.dao;
+package user.dao.old;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import user.dao.UserDaoJdbc;
 import user.domain.User;
 
 import java.sql.SQLException;
 
 public class UserDaoConnectionCountingTest {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        ApplicationContext ac = new AnnotationConfigApplicationContext("../../main/resources/applicationContext.xml");
+        ApplicationContext ac = new AnnotationConfigApplicationContext("applicationContext.xml");
         UserDaoJdbc dao = ac.getBean("userDao", UserDaoJdbc.class);
 
         dao.add(new User("1","kakao", "1231"));

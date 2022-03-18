@@ -1,7 +1,8 @@
-package user.dao;
+package user.dao.old;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
+import user.dao.UserDaoJdbc;
 import user.domain.User;
 
 import java.sql.SQLException;

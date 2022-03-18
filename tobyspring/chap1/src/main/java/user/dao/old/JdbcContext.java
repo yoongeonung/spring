@@ -1,4 +1,4 @@
-package user.dao;
+package user.dao.old;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
