@@ -1,6 +1,6 @@
 # 3장 템플릿
 
-## #Spring/toby/템플릿
+---
 
 - 템플릿이란 바뀌는 성질이 다른 코드 중에서 변경이 거의 일어나지 않으며 일정한 패턴으로 유지되는 특성을 가진 부분을 자유롭게 변경되는 성질을 가진 부분으로부터 독립시켜서 효과적으로 활용할 수 있도록 하는 방법이다.
 
@@ -59,7 +59,12 @@ public void add(final User user) throws SQLException {
 # 템플릿 / 콜백 패턴
 
 - 전략 패턴의 기본 구조에 익명 내부 클래스를 활용한 방식을 스프링에서는 탬플릿/콜백 패턴이라고 한다.
+- 단일 전략 메소드를 갖는 전략패턴이면서 익명 내부 클래스를 사용해서 매번 전략을 새로 만들어 사용하고, 컨텍스트 호출과 동시에 전략 DI를 수행하는 방식을 템플릿 / 콜백 패턴이라고 한다.
 - 전략패턴의 컨텍스트를 템플릿이라고 부르고, 익명 내부 클래스로 만들어지는 오브젝트를 콜백이라고 부른다.
+  - 콜백의 코드에도 일정한 패턴이 반복된다면 콜백을 탬플릿에 넣고 재활용하는 것이 편리하다.
+- 탬플릿과 콜백의 타입이 다양하게 바뀔수 있다면 제네릭스를 이용한다.
+- 템플릿은 한번에 하나 이상의 콜백을 사용할 수도 있고, 하나의 콜백을 여러번 호출할 수도 있다.
+- 템플릿 / 콜백을 설계할 떄는 템플릿과 콜백 사이에 주고받는 정보에 관심을 둬야한다.
 
 > _참고 : 템플릿_
 > 템플릿(template)은 어떤 목적을 위해 미리 만들어둔 모양이 있는 틀을 가리킨다. 학생들이 도형을 그릴 때 사용하는 도형자 또는 모양자가 바로 템플릿이다. 프로그래밍에서는 고정된 틀 안에 바꿀 수있는 부분을 넣어서 사용하는 경우에 템플릿이라고 부른다. JSP는 HTML이라는 고정된 부분에 EL 과 스크립릿이라는 변하는 부분을 넣은 일종의 템플릿 파일이다. 템플릿 메소드 패턴은 고정된 틀의 로직을 가진 템플릿 메소드를 슈퍼클래스에 두고, 바뀌는 부분을 서브클래스의 메소드에 두는 구조로 이뤄진다.
@@ -76,6 +81,104 @@ public void add(final User user) throws SQLException {
 - 탬플릿은 정해진 작업 흐름을 따라 작업을 진행하다가 내부에서 생성한 참조정보를 가지고 콜백 오브젝트의 메소드를 호출한다. 콜백은 클라이언트 메소드에 있는 정보와 탬플릿이 제공한 참조정보를 이용해서 작업을 수행하고 그 결과를 다시 탬플릿에 돌려준다.
 - 탬플릿은 콜백이 돌려준 정보를 사용해서 작업을 마저 수행한다. 경우에 따라 최종 결과를 클라이언트에 다시 돌려주기도 한다.
 - 콜백 오브젝트가 내부 클래스로서 자신을 생성한 클라이언트 메소드 내의 정보를 직접 참조한다.
--
+
+---
+
+# 스프링의 Jdbc Template
+
+- 스프링이 제공하는 다양한 탬플릿 / 콜백 패턴
+- JDBC와 같은 예외가 발생할 가능성이 있으며 공유 리소스의 반환이 필요한 코드는 반드시 `try/catch/finally` 블록으로 관리해야 한다.
+
+## update()
+
+- 템플릿으로부터 `Connection`을 제공받아서 `PreparedStatement`를 만들어 돌려준다
+
+```java
+// 탬플릿 메소드 update()와 콜백 new PreparedStatementCreator()
+this.jdbcTemplate.update(new PreparedStatementCreator() {
+    @Override
+    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+        return con.prepareStatement("delete from USER");
+    }
+});
+```
+
+- SQL문장만 전달하면 미리 준비된 콜백을 만들어서 탬플릿을 호출하는 기능
+
+```java
+// 같은 탬플릿 메소드 update()이지만 파라미터가 틀리다.
+// jdbcTemplate의 내장 콜백함수를 사용
+jdbcTemplate.update("delete from USER");
+```
+
+- 치환자를 가진 SQL로 `PreparedStatement`를 만들고 함께 제공하는 파라미터를 순서대로 바인딩해주는 기능을 가진 `update()` 메소드
+
+```java
+jdbcTemplate.update(
+	"insert into USER (id, name, password) values (?,?,?)",
+			 user.getId(), user.getName(), user.getPassword());
+```
+
+---
+
+## query()
+
+- 여러개의 로우결과로 나오는 일반적인 경우에 사용된다.
+- `query()`의 리턴타입은 `List<T>`다.
+- `query()`는 제네릭 메소드로 타입은 파라미터로 넘기는 `RowMapper<T>` 콜백 오브젝트에서 결정된다.
+- `query()`템플릿은 SQL을 실행해서 얻은 `ResultSet`의 모든 로우를 열람하면서 로우마다 `RowMapper`콜백을 호출한다. -> SQL쿼리를 실행해 DB에서 가져오는 로우의 개수만큼 콜백이 호출된다.
+- SQL Query를 실행하고 ResultSet을 통해 결과값을 가져오는 방법
+  - 이런 작업 흐름에 사용할수 있는 탬플릿은 `PreparedStatementCreator` 콜백과 `ResultSetExtractor` 콜백을 파라미터로 받는 `query()` 메소드.
+
+```java
+// jdbcTemplate 1, queryForInt() 는 deprecated 됨.
+jdbcTemplate.query(new PreparedStatementCreator() {
+    @Override
+    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+        return con.prepareStatement
+						("select COUNT(*) from USER");
+    }
+}, new ResultSetExtractor<Integer>() {
+    @Override
+    public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+        rs.next();
+        return rs.getInt(1); // 1부터 시작
+    }
+});
+```
+
+---
+
+## queryForObject()
+
+- query의 결과가 row 하나일때 사용된다.
+- `ResultSetExtractor`와 `RowMapper`
+  - 둘다 모두 탬플릿으로부터 `ResultSet`을 전달받고, 필요한 정보를 추출해서 리턴하는 방식으로 동작
+- `ResultSetExtractor`는 `ResultSet`을 한 번 전달받아 알아서 추출 작업을 모두 진행하고 최종결과만 리턴.
+- `RowMapper`는 `ResultSet`의 로우 하나를 매핑하기 위해 사용되기 때문에 여러번 호출될 수 있다.
+
+```java
+// jdbcTemplate 적용
+// sql, rowMapper, args가 들어간다.
+return jdbcTemplate.queryForObject(
+	"select * from USER where id = ?",
+	new RowMapper<User>() {
+    @Override
+    public User mapRow(ResultSet rs, int rowNum)
+										throws SQLException {
+        User user = new User();
+        user.setId(rs.getString("id"));
+        user.setName(rs.getString("name"));
+        user.setPassword(rs.getString("password"));
+        return user;
+    }
+},
+	id
+);
+
+// queryForInt()는 deprecated
+jdbcTemplate.queryForObject
+				("select COUNT(*) from USER", Integer.class);
+```
 
 ---
