@@ -1,7 +1,6 @@
 package user.dao;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import user.domain.User;
 
@@ -25,7 +24,7 @@ public class UserDaoTest {
 //        ApplicationContext ac = new AnnotationConfigApplicationContext(DaoFactory.class);
         // xml 파일을 이용한 설정정보 사용
         ApplicationContext ac = new GenericXmlApplicationContext("applicationContext.xml");
-        UserDao dao = ac.getBean("userDao", UserDao.class); // 동일 오브젝트 (싱글톤)
+        UserDaoJdbc dao = ac.getBean("userDao", UserDaoJdbc.class); // 동일 오브젝트 (싱글톤)
 //        UserDao dao3 = ac.getBean("userDao", UserDao.class); // 동일 오브젝트 (싱글톤)
 //        UserDao dao4 = ac.getBean("userDao", UserDao.class); // 동일 오브젝트 (싱글톤)
 //        System.out.println("dao3 = " + dao3);

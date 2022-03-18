@@ -3,10 +3,15 @@ package user.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -25,13 +30,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DirtiesContext
 class UserDaoTest {
 
-    private UserDao dao;
+    private UserDaoJdbc dao;
     private User wooah;
     private User naver;
     private User line;
 
     @Autowired
     private ApplicationContext ac;
+    @Autowired
+    private DataSource dataSource;
 
     @BeforeEach
     void beforeEach() {
@@ -43,7 +50,7 @@ class UserDaoTest {
         System.out.println(" Application Context = " + this.ac);
         System.out.println(" this = " + this);
 
-        dao = ac.getBean("userDao", UserDao.class);
+        dao = ac.getBean("userDao", UserDaoJdbc.class);
         dao.setDataSource(dataSource);
 
         this.wooah = new User("1", "우형", "1234");
@@ -150,4 +157,50 @@ class UserDaoTest {
         assertThat(user1.getPassword()).isEqualTo(user2.getPassword());
     }
 
+    @Test
+    void duplicateKet() {
+        dao.deleteAll();
+
+        User user1 = new User();
+        user1.setId("1");
+        user1.setName("user1");
+        user1.setPassword("1111");
+
+        dao.add(user1);
+        assertThat(dao.getAll().size()).isEqualTo(1);
+
+        User user2 = new User();
+        user2.setId("1");
+        user2.setName("user2");
+        user2.setPassword("2222");
+
+        assertThrows(DataAccessException.class, () -> dao.add(user2));
+    }
+
+    @Test
+    void sqlExceptionTranslate() {
+        dao.deleteAll();
+
+        User user1 = new User();
+        user1.setId("1");
+        user1.setName("user1");
+        user1.setPassword("1111");
+
+        dao.add(user1);
+        assertThat(dao.getAll().size()).isEqualTo(1);
+
+        User user2 = new User();
+        user2.setId("1");
+        user2.setName("user2");
+        user2.setPassword("2222");
+
+        try {
+            dao.add(user2);
+        } catch (DuplicateKeyException ex) {
+            SQLException sqlEx = (SQLException) ex.getRootCause();
+            SQLExceptionTranslator set = new SQLErrorCodeSQLExceptionTranslator(dataSource);
+            assertThat(set.translate(null, null, sqlEx)).isInstanceOf(DuplicateKeyException.class);
+
+        }
+    }
 }
