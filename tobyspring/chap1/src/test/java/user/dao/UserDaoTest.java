@@ -21,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 //@ContextConfiguration(classes = {TestDaoFactory.class})
-@ContextConfiguration(locations = "/test-applicationContext.xml")
+@ContextConfiguration(locations = "/applicationContext.xml")
 @DirtiesContext
 class UserDaoTest {
 
     private UserDao dao;
-//    private User wooah;
-//    private User naver;
-//    private User line;
+    private User wooah;
+    private User naver;
+    private User line;
 
     @Autowired
     private ApplicationContext ac;
@@ -46,9 +46,9 @@ class UserDaoTest {
         dao = ac.getBean("userDao", UserDao.class);
         dao.setDataSource(dataSource);
 
-//        this.wooah = new User("1", "우형", "1234");
-//        this.naver = new User("2", "네이버", "1234");
-//        this.line = new User("3", "라인", "1234");
+        this.wooah = new User("1", "우형", "1234");
+        this.naver = new User("2", "네이버", "1234");
+        this.line = new User("3", "라인", "1234");
     }
 
 
@@ -77,19 +77,17 @@ class UserDaoTest {
 
     @Test
     void count() throws SQLException {
+        dao.deleteAll();
+        assertThat(dao.getCount()).isEqualTo(0);
 
+        dao.add(wooah);
+        assertThat(dao.getCount()).isEqualTo(1);
 
-//        dao.deleteAll();
-//        assertThat(dao.getCount()).isEqualTo(0);
-//
-//        dao.add(wooah);
-//        assertThat(dao.getCount()).isEqualTo(1);
-//
-//        dao.add(naver);
-//        assertThat(dao.getCount()).isEqualTo(2);
-//
-//        dao.add(line);
-//        assertThat(dao.getCount()).isEqualTo(3);
+        dao.add(naver);
+        assertThat(dao.getCount()).isEqualTo(2);
+
+        dao.add(line);
+        assertThat(dao.getCount()).isEqualTo(3);
     }
 
     @Test
@@ -103,6 +101,9 @@ class UserDaoTest {
     @Test
     void getAll() throws SQLException {
         dao.deleteAll();
+
+        List<User> users0 = dao.getAll();
+        assertThat(users0.size()).isEqualTo(0); // 아무것도 없을때 예외대신 빈 리스트가 돌아온다.
 
         User user1 = new User();
         user1.setId("ccc");
