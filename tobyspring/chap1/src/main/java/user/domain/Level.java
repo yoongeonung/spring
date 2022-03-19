@@ -18,7 +18,6 @@ public enum Level {
             case 1:
                 return Level.BASIC;
             case 2:
-                System.out.println("test");
                 return Level.SILVER;
             case 3:
                 return Level.GOLD;

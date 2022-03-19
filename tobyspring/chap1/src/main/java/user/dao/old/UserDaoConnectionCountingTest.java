@@ -3,6 +3,7 @@ package user.dao.old;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import user.dao.UserDaoJdbc;
+import user.domain.Level;
 import user.domain.User;
 
 import java.sql.SQLException;
@@ -12,11 +13,11 @@ public class UserDaoConnectionCountingTest {
         ApplicationContext ac = new AnnotationConfigApplicationContext("applicationContext.xml");
         UserDaoJdbc dao = ac.getBean("userDao", UserDaoJdbc.class);
 
-        dao.add(new User("1","kakao", "1231"));
-        dao.add(new User("2","cakao", "1232"));
-        dao.add(new User("3","sakao", "1233"));
-        dao.add(new User("4","dakao", "1234"));
-        dao.add(new User("5","zakao", "1235"));
+        dao.add(new User("1","kakao", "1231", Level.SILVER, 20, 20));
+//        dao.add(new User("2","cakao", "1232"));
+//        dao.add(new User("3","sakao", "1233"));
+//        dao.add(new User("4","dakao", "1234"));
+//        dao.add(new User("5","zakao", "1235"));
 
         CountingConnectionMaker ccm = ac.getBean("connectionMaker", CountingConnectionMaker.class);
         System.out.println("count = " + ccm.getCount());
