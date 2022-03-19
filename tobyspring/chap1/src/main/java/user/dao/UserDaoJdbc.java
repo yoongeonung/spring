@@ -13,6 +13,9 @@ import java.util.List;
 
 @NoArgsConstructor
 public class UserDaoJdbc implements UserDao{
+
+    private JdbcTemplate jdbcTemplate;
+
     private RowMapper<User> userMapper = new RowMapper<User>() {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -27,7 +30,6 @@ public class UserDaoJdbc implements UserDao{
         }
     };
 
-    private JdbcTemplate jdbcTemplate;
 
     // jdbcTemplate을 빈으로 등록해서 사용하고 싶은경우 setJdbcTemplate()로 이름을 변경해서 사용하면된다.
     public void setDataSource(DataSource dataSource) {
@@ -70,7 +72,15 @@ public class UserDaoJdbc implements UserDao{
 //        });
     }
 
+    @Override
     public List<User> getAll() {
         return jdbcTemplate.query("select * from USER order by id", userMapper);
+    }
+
+    @Override
+    public void update(User user) {
+        jdbcTemplate
+                .update("update USER set name = ?, password = ?, level = ?, recommend = ?, login = ? where id = ?",
+                        user.getName(), user.getPassword(), user.getLevel().intValue(), user.getRecommend(), user.getLogin(), user.getId());
     }
 }

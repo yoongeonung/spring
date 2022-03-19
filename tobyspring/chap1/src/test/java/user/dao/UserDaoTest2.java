@@ -48,7 +48,9 @@ public class UserDaoTest2 {
         user1.setRecommend(50);
         user1.setLevel(Level.SILVER);
 
-        User updatedUser = userDao.update(user1);
+        userDao.update(user1);
+        User updatedUser = userDao.get(user1.getId());
+
         checkSameUser(user1, updatedUser);
     }
 
