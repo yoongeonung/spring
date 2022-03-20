@@ -18,12 +18,15 @@ public class UserDaoTest2 {
 
     @Autowired
     private UserDao userDao;
+    // fixture
     private User user1;
+    private User user2;
 
     @BeforeEach
     void beforeEach() {
         // fixture 등록
         user1 = new User("1", "USER_1","1111", Level.BASIC, 1, 0);
+        user2 = new User("2", "USER_2","2222", Level.SILVER, 19, 5);
     }
 
     private void checkSameUser(User user1, User user2) {
@@ -40,7 +43,8 @@ public class UserDaoTest2 {
         userDao.deleteAll();
         assertThat(userDao.getAll().size()).isEqualTo(0);
 
-        userDao.add(user1);
+        userDao.add(user1); // 수정 할 사용자
+        userDao.add(user2); // 수정 하지 않을 사용자
 
         user1.setName("FIRST_USER");
         user1.setPassword("1111_1111");
@@ -50,8 +54,10 @@ public class UserDaoTest2 {
 
         userDao.update(user1);
         User updatedUser = userDao.get(user1.getId());
-
         checkSameUser(user1, updatedUser);
+
+        User findUser2 = userDao.get(user2.getId());
+        checkSameUser(user2, findUser2);
     }
 
 
