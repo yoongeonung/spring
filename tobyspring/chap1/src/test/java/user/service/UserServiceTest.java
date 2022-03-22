@@ -14,6 +14,8 @@ import user.domain.User;
 import java.util.Arrays;
 import java.util.List;
 
+import static user.service.UserService.*;
+
 @ExtendWith({SpringExtension.class})
 @ContextConfiguration(locations = "/applicationContext.xml")
 class UserServiceTest {
@@ -24,17 +26,22 @@ class UserServiceTest {
     private UserDao dao;
     private List<User> users; // fixtrue
 
-    private void checkLevel(User user, Level expectedLevel) {
-        Assertions.assertThat(user.getLevel()).isEqualTo(expectedLevel);
+    private void checkLevel(User user, Boolean upgradable) {
+        User savedUser = dao.get(user.getId());
+        if (upgradable) {
+            Assertions.assertThat(user.getLevel().nextLevel()).isEqualTo(savedUser.getLevel());
+        } else {
+            Assertions.assertThat(user.getLevel()).isEqualTo(savedUser.getLevel());
+        }
     }
 
     @BeforeEach
     void beforeEach() {
         users = Arrays.asList(
-                new User("1", "USER1", "1111", Level.BASIC, 49, 0),
-                new User("2", "USER2", "2222", Level.BASIC, 50, 0),
-                new User("3", "USER3", "3333", Level.SILVER, 60, 29),
-                new User("4", "USER4", "4444", Level.SILVER, 60, 30),
+                new User("1", "USER1", "1111", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0),
+                new User("2", "USER2", "2222", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0),
+                new User("3", "USER3", "3333", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD-1),
+                new User("4", "USER4", "4444", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
                 new User("5", "USER5", "5555", Level.GOLD, 100, 100)
         );
     }
@@ -50,12 +57,11 @@ class UserServiceTest {
 
         userService.upgradeLevels();
 
-        List<User> savedUsers = dao.getAll();
-        checkLevel(savedUsers.get(0), Level.BASIC);
-        checkLevel(savedUsers.get(1), Level.SILVER);
-        checkLevel(savedUsers.get(2), Level.SILVER);
-        checkLevel(savedUsers.get(3), Level.GOLD);
-        checkLevel(savedUsers.get(4), Level.GOLD);
+        checkLevel(users.get(0), false);
+        checkLevel(users.get(1), true);
+        checkLevel(users.get(2), false);
+        checkLevel(users.get(3), true);
+        checkLevel(users.get(4), false);
     }
 
     @Test
