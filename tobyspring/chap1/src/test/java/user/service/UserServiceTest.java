@@ -24,6 +24,10 @@ class UserServiceTest {
     private UserDao dao;
     private List<User> users; // fixtrue
 
+    private void checkLevel(User user, Level expectedLevel) {
+        Assertions.assertThat(user.getLevel()).isEqualTo(expectedLevel);
+    }
+
     @BeforeEach
     void beforeEach() {
         users = Arrays.asList(
@@ -44,7 +48,7 @@ class UserServiceTest {
         }
         Assertions.assertThat(dao.getAll().size()).isEqualTo(5);
 
-        userService.upgradeLevel();
+        userService.upgradeLevels();
 
         List<User> savedUsers = dao.getAll();
         checkLevel(savedUsers.get(0), Level.BASIC);
@@ -54,8 +58,26 @@ class UserServiceTest {
         checkLevel(savedUsers.get(4), Level.GOLD);
     }
 
-    private void checkLevel(User user, Level expectedLevel) {
-        Assertions.assertThat(user.getLevel()).isEqualTo(expectedLevel);
+    @Test
+    void add() {
+        dao.deleteAll();
+
+        // Level 초기설정없음
+        User user1 = users.get(0);
+        user1.setLevel(null);
+
+        User user2 = users.get(4);    // Level 초기설정있음 (GOLD)
+
+        userService.add(user1);
+        userService.add(user2);
+
+        User addedUser1 = dao.get(user1.getId());
+        User addedUser2 = dao.get(user2.getId());
+
+        Assertions.assertThat(addedUser1.getLevel()).isEqualTo(Level.BASIC);
+        Assertions.assertThat(addedUser2.getLevel()).isEqualTo(user2.getLevel());
+
+
     }
 
 }
