@@ -38,7 +38,6 @@ public class User {
         if (nextLevel == null) {
             throw new IllegalStateException(level + "은 업그레이드가 불가능합니다.");
         }
-        System.out.println("throw를 타면 바로 메소드가 종료되는가의 실험");
         lastUpdate = LocalDate.now();
         level = nextLevel;
     }
