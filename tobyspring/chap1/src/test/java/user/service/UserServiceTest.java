@@ -11,9 +11,11 @@ import user.dao.UserDao;
 import user.domain.Level;
 import user.domain.User;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static user.service.UserService.*;
 
 @ExtendWith({SpringExtension.class})
@@ -24,14 +26,17 @@ class UserServiceTest {
     private UserService userService;
     @Autowired
     private UserDao dao;
+    @Autowired
+    private DataSource dataSource;
+
     private List<User> users; // fixtrue
 
-    private void checkLevel(User user, Boolean upgradable) {
+    private void checkLevel(User user, Boolean upgraded) {
         User savedUser = dao.get(user.getId());
-        if (upgradable) {
-            Assertions.assertThat(user.getLevel().nextLevel()).isEqualTo(savedUser.getLevel());
+        if (upgraded) {
+            Assertions.assertThat(savedUser.getLevel()).isEqualTo(user.getLevel().nextLevel());
         } else {
-            Assertions.assertThat(user.getLevel()).isEqualTo(savedUser.getLevel());
+            Assertions.assertThat(savedUser.getLevel()).isEqualTo(user.getLevel());
         }
     }
 
@@ -47,7 +52,7 @@ class UserServiceTest {
     }
 
     @Test
-    void upgradeLevels() {
+    void upgradeLevels() throws Exception {
         dao.deleteAll();
         Assertions.assertThat(dao.getAll().size()).isEqualTo(0);
         for (User user : users) {
@@ -86,4 +91,42 @@ class UserServiceTest {
 
     }
 
+    @Test
+    void upgradeAllOrNothing() {
+        TestUserService testUserService = new TestUserService(users.get(3).getId());
+        testUserService.setUserDao(dao);
+        testUserService.setDataSource(dataSource);
+
+        dao.deleteAll();
+        for (User user : users) {
+            dao.add(user);
+        }
+
+        try {
+            testUserService.upgradeLevels();
+            fail("TestUserServiceException expected");
+        } catch (Exception e) {
+        }
+        checkLevel(users.get(1), false);
+    }
+
+    private static class TestUserService extends UserService {
+        private String id;
+
+        public TestUserService(String id) {
+            this.id = id;
+        }
+
+        @Override
+        protected void upgradeLevel(User user) {
+            if (user.getId().equals(id)) {
+                throw new TestUserServiceException();
+            }
+            super.upgradeLevel(user);
+        }
+    }
+
+    static class TestUserServiceException extends RuntimeException {
+    }
 }
+
