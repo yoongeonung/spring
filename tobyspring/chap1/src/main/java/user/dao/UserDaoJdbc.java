@@ -26,6 +26,7 @@ public class UserDaoJdbc implements UserDao{
             user.setLevel(Level.valueOf(rs.getInt("level"))); // 이넘 쓰기힘드네
             user.setRecommend(rs.getInt("recommend"));
             user.setLogin(rs.getInt("login"));
+            user.setEmail(rs.getString("email"));
             return user;
         }
     };
@@ -38,7 +39,7 @@ public class UserDaoJdbc implements UserDao{
 
     public void add(final User user) {
         // jdbcTemplate 사용
-        jdbcTemplate.update("insert into USER (id, name, password, level, recommend, login) values (?,?,?,?,?,?)", user.getId(), user.getName(), user.getPassword(), user.getLevel().intValue(), user.getRecommend(), user.getLogin());
+        jdbcTemplate.update("insert into USER (id, name, password, level, recommend, login, email) values (?,?,?,?,?,?,?)", user.getId(), user.getName(), user.getPassword(), user.getLevel().intValue(), user.getRecommend(), user.getLogin(), user.getEmail());
     }
 
     public User get(String id) {
@@ -80,7 +81,7 @@ public class UserDaoJdbc implements UserDao{
     @Override
     public void update(User user) {
         jdbcTemplate
-                .update("update USER set name = ?, password = ?, level = ?, recommend = ?, login = ? where id = ?",
-                        user.getName(), user.getPassword(), user.getLevel().intValue(), user.getRecommend(), user.getLogin(), user.getId());
+                .update("update USER set name = ?, password = ?, level = ?, recommend = ?, login = ?, email = ? where id = ?",
+                        user.getName(), user.getPassword(), user.getLevel().intValue(), user.getRecommend(), user.getLogin(), user.getEmail(), user.getId());
     }
 }

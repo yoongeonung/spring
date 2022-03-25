@@ -1,19 +1,25 @@
 package user.service;
 
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import user.dao.UserDao;
 import user.domain.Level;
 import user.domain.User;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Properties;
 
 public class UserService {
 
@@ -21,11 +27,16 @@ public class UserService {
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 
     private UserDao userDao;
-    private DataSource dataSource;
+    private MailSender mailSender;
+//    private DataSource dataSource;
+    private PlatformTransactionManager transactionManager;
 
+    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
+    }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setMailSender(MailSender mailSender) {
+        this.mailSender = mailSender;
     }
 
     public void setUserDao(UserDao userDao) {
@@ -69,8 +80,10 @@ public class UserService {
 //        Connection c = DataSourceUtils.getConnection(dataSource);
 //        c.setAutoCommit(false);
 
-        // JDBC 트랜잭션 추상 오브젝트 생성
-        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+        // JDBC 트랜잭션 추상 오브젝트 생성 -> DI로 변경
+//        PlatformTransactionManager transactionManager = new JtaTransactionManager();
+//        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+
         // 트랜잭션 시작
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
@@ -131,6 +144,40 @@ public class UserService {
 //        }
         user.upgradeLevel();
         userDao.update(user);
+        sendUpgradeEmail(user);
+    }
+
+    private void sendUpgradeEmail(User user) {
+//        Properties props = new Properties();
+//        props.put("mail.smtp.host", "mail.ksug.org");
+//        Session s = Session.getInstance(props, null);
+//
+//        MimeMessage message = new MimeMessage(s);
+//        try {
+//            message.setFrom(new InternetAddress("useradmin@ksug.org"));
+//            message.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(user.getEmail())));
+//            message.setSubject("Upgrade 안내");
+//            message.setText("사용자님의 등급이 " + user.getLevel().name() + "로 업그레이드 되셨습니다.");
+//
+//            Transport.send(message);
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+
+        // 스프링의 JavaMailSender로 대체
+        // try/catch 불요
+//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+//        mailSender.setHost("mail.server.com");
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(user.getEmail());
+        mailMessage.setFrom("useradmin@ksug.org");
+        mailMessage.setSubject("Upgrade 안내");
+        mailMessage.setText("사용자님의 등급이 " + user.getLevel().name() + "로 업그레이드 되셨습니다.");
+
+        mailSender.send(mailMessage);
+
+
     }
 
     // template-callback 패턴으로 대체

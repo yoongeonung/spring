@@ -55,9 +55,9 @@ class UserDaoTest {
         dao = ac.getBean("userDao", UserDaoJdbc.class);
         dao.setDataSource(dataSource);
 
-        this.user1 = new User("1", "우형", "1234", Level.BASIC, 1, 0);
-        this.user2 = new User("2", "네이버", "1234", Level.SILVER, 55, 10);
-        this.user3 = new User("3", "라인", "1234", Level.GOLD, 100, 40);
+        this.user1 = new User("1", "우형", "1234", "abcd@gmail.com",Level.BASIC, 1, 0);
+        this.user2 = new User("2", "네이버", "1234", "abcd@gmail.com",Level.SILVER, 55, 10);
+        this.user3 = new User("3", "라인", "1234", "abcd@gmail.com",Level.GOLD, 100, 40);
 
         dao.deleteAll();
 

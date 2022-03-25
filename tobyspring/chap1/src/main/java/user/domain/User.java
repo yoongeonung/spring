@@ -14,20 +14,22 @@ public class User {
     private String id;
     private String name;
     private String password;
+    private String email;
 
     private Level level;
     private int login;
+    private int recommend;
 
-    public User(String id, String name, String password, Level level, int login, int recommend) {
+    public User(String id, String name, String password, String email, Level level, int login, int recommend) {
         this.id = id;
         this.name = name;
         this.password = password;
+        this.email = email;
         this.level = level;
         this.login = login;
         this.recommend = recommend;
     }
 
-    private int recommend;
     private LocalDate lastUpdate;   // 기타 기능 추가
 
     // User의 내부 정보가 변경되는 경우 User외의 다른 객체가 아닌 User가 담당하는게 더 좋다.

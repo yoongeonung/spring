@@ -5,8 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.PlatformTransactionManager;
 import user.dao.UserDao;
 import user.domain.Level;
 import user.domain.User;
@@ -27,7 +29,9 @@ class UserServiceTest {
     @Autowired
     private UserDao dao;
     @Autowired
-    private DataSource dataSource;
+    private PlatformTransactionManager transactionManager;
+    @Autowired
+    private MailSender mailSender;
 
     private List<User> users; // fixtrue
 
@@ -43,11 +47,11 @@ class UserServiceTest {
     @BeforeEach
     void beforeEach() {
         users = Arrays.asList(
-                new User("1", "USER1", "1111", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0),
-                new User("2", "USER2", "2222", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0),
-                new User("3", "USER3", "3333", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD-1),
-                new User("4", "USER4", "4444", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
-                new User("5", "USER5", "5555", Level.GOLD, 100, 100)
+                new User("1", "USER1", "1111", "abcd@gmail.com",Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0),
+                new User("2", "USER2", "2222", "abcd@gmail.com",Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0),
+                new User("3", "USER3", "3333", "abcd@gmail.com",Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD-1),
+                new User("4", "USER4", "4444", "abcd@gmail.com",Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
+                new User("5", "USER5", "5555", "abcd@gmail.com",Level.GOLD, 100, 100)
         );
     }
 
@@ -95,7 +99,8 @@ class UserServiceTest {
     void upgradeAllOrNothing() {
         TestUserService testUserService = new TestUserService(users.get(3).getId());
         testUserService.setUserDao(dao);
-        testUserService.setDataSource(dataSource);
+        testUserService.setTransactionManager(transactionManager);
+        testUserService.setMailSender(mailSender);
 
         dao.deleteAll();
         for (User user : users) {

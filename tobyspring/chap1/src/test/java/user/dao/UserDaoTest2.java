@@ -25,8 +25,8 @@ public class UserDaoTest2 {
     @BeforeEach
     void beforeEach() {
         // fixture 등록
-        user1 = new User("1", "USER_1","1111", Level.BASIC, 1, 0);
-        user2 = new User("2", "USER_2","2222", Level.SILVER, 19, 5);
+        user1 = new User("1", "USER_1","1111", "abcd@gmail.com", Level.BASIC, 1, 0);
+        user2 = new User("2", "USER_2","2222", "abcd@gmail.com", Level.SILVER, 19, 5);
     }
 
     private void checkSameUser(User user1, User user2) {
@@ -36,6 +36,7 @@ public class UserDaoTest2 {
         assertThat(user1.getLevel()).isEqualTo(user2.getLevel());
         assertThat(user1.getLogin()).isEqualTo(user2.getLogin());
         assertThat(user1.getRecommend()).isEqualTo(user2.getRecommend());
+        assertThat(user1.getEmail()).isEqualTo(user2.getEmail());
     }
 
     @Test
@@ -48,6 +49,7 @@ public class UserDaoTest2 {
 
         user1.setName("FIRST_USER");
         user1.setPassword("1111_1111");
+        user1.setEmail("abcd@gmail.com");
         user1.setLogin(100);
         user1.setRecommend(50);
         user1.setLevel(Level.SILVER);
