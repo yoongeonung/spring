@@ -25,11 +25,17 @@
 <!--    </bean>-->
     <bean id="mailSender" class="user.service.DummyMailSender"/>
 
-    <bean id="userService" class="user.service.UserService">
+    <bean id="userServiceImpl" class="user.service.UserServiceImpl">
         <property name="userDao" ref="userDao" />
-        <property name="transactionManager" ref="transactionManager" />
         <property name="mailSender" ref="mailSender" />
     </bean>
+
+    <bean id="userService" class="user.service.UserServiceTx">
+        <property name="userService" ref="userServiceImpl"/>
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
+
+
 
 
 </beans>
