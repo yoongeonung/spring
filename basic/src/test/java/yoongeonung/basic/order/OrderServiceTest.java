@@ -1,18 +1,24 @@
 package yoongeonung.basic.order;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import yoongeonung.basic.AppConfig;
 import yoongeonung.basic.member.Grade;
 import yoongeonung.basic.member.Member;
 import yoongeonung.basic.member.MemberService;
-import yoongeonung.basic.member.MemberServiceImpl;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceTest {
 
-    private final MemberService memberService = new MemberServiceImpl();
-    private final OrderService orderService = new OrderServiceImpl();
+    private MemberService memberService;
+    private OrderService orderService;
+
+    @BeforeEach
+    void beforeEach() {
+        AppConfig appConfig = new AppConfig();
+        this.memberService = appConfig.memberService();
+        this.orderService = appConfig.orderService();
+    }
 
     @Test
     void createOrder() {

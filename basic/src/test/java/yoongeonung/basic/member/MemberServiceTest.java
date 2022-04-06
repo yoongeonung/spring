@@ -1,13 +1,21 @@
 package yoongeonung.basic.member;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import yoongeonung.basic.AppConfig;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MemberServiceTest {
 
-    private final MemberService memberService = new MemberServiceImpl();
+    private MemberService memberService;
+
+    @BeforeEach
+    void beforeEach() {
+        AppConfig appConfig = new AppConfig();
+        this.memberService = appConfig.memberService();
+    }
 
     @Test
     void join() {
