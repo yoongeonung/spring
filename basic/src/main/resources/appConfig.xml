@@ -10,3 +10,4 @@
     <bean id="memberRepository" class="yoongeonung.basic.member.MemoryMemberRepository"/>
 
 </beans>
+

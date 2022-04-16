@@ -1,14 +1,18 @@
 package yoongeonung.basic.order;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import yoongeonung.basic.discount.DiscountPolicy;
 import yoongeonung.basic.member.Member;
 import yoongeonung.basic.member.MemberRepository;
 
+@Component
 public class OrderServiceImpl implements OrderService{
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;

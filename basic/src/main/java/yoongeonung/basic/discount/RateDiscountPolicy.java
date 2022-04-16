@@ -1,8 +1,10 @@
 package yoongeonung.basic.discount;
 
+import org.springframework.stereotype.Component;
 import yoongeonung.basic.member.Grade;
 import yoongeonung.basic.member.Member;
 
+@Component
 public class RateDiscountPolicy implements DiscountPolicy{
 
     private static final int DISCOUNT_RATE = 10;
