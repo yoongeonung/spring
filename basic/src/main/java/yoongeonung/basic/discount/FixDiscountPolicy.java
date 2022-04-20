@@ -1,12 +1,12 @@
 package yoongeonung.basic.discount;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import yoongeonung.basic.annotation.SubDiscountPolicy;
 import yoongeonung.basic.member.Grade;
 import yoongeonung.basic.member.Member;
 
 @Component
-@Qualifier("subDiscountPolicy")
+@SubDiscountPolicy
 public class FixDiscountPolicy implements DiscountPolicy{
 
     private static final int FIX_DISCOUNT_AMOUNT = 1000;
