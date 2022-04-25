@@ -1,7 +1,7 @@
 package yoongeonung.basic.lifecycle;
 
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 public class NetworkClient {
 
@@ -27,13 +27,28 @@ public class NetworkClient {
         System.out.println("close: " + url);
     }
 
+    @PreDestroy
     public void close() {
         System.out.println("NetworkClient.close");
         disconnect();
     }
 
+    @PreDestroy
+    public void shutdown() {
+        System.out.println("NetworkClient.shutdown");
+        disconnect();
+    }
+
+    @PostConstruct
     public void init() {
-        System.out.println("NetworkClient.afterPropertiesSet");
+        System.out.println("NetworkClient.init");
+        connect();
+        call("초기화 연결 메세지");
+    }
+
+    @PostConstruct
+    public void start() {
+        System.out.println("NetworkClient.start");
         connect();
         call("초기화 연결 메세지");
     }
