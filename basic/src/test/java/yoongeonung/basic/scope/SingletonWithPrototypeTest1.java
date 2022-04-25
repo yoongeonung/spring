@@ -1,6 +1,7 @@
 package yoongeonung.basic.scope;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
@@ -40,7 +41,7 @@ public class SingletonWithPrototypeTest1 {
         System.out.println("count2 = " + count2);
         //then
         assertThat(count1).isEqualTo(1);
-        assertThat(count2).isEqualTo(2);
+        assertThat(count2).isEqualTo(1);
     }
     
     @Scope("prototype")
@@ -69,13 +70,14 @@ public class SingletonWithPrototypeTest1 {
 
     @Scope
     static class ClientBean {
-        private final PrototypeBean prototypeBean;
+        private final ObjectProvider<PrototypeBean> objectProvider;
 
-        public ClientBean(PrototypeBean prototypeBean) {
-            this.prototypeBean = prototypeBean;
+        public ClientBean(ObjectProvider<PrototypeBean> objectProvider) {
+            this.objectProvider = objectProvider;
         }
-        
+
         public int logic() {
+            PrototypeBean prototypeBean = objectProvider.getObject();
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }
