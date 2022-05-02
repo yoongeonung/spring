@@ -7,26 +7,32 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import user.domain.User;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "/applicationContext.xml")
 public class UserDaoTest {
 
+  @Autowired
   private UserDao userDao;
+  private User user1;
+  private User user2;
+  private User user3;
 
   @Before
   public void setUp() {
-    ApplicationContext applicationContext = new GenericXmlApplicationContext(
-        "applicationContext.xml");
-    this.userDao = applicationContext.getBean("userDao", UserDao.class);
+    this.user1 = new User("1", "userA", "1111");
+    this.user2 = new User("2", "userB", "2222");
+    this.user3 = new User("3", "userC", "3333");
   }
 
   @Test
   public void addAndGet() throws SQLException, ClassNotFoundException {
-    User user1 = new User("1", "userA", "1234");
-    User user2 = new User("2", "userB", "5678");
 
     userDao.deleteAll();
     assertThat(userDao.getCount(), is(0));
@@ -46,10 +52,6 @@ public class UserDaoTest {
 
   @Test
   public void count() throws SQLException, ClassNotFoundException {
-    User user1 = new User("1", "userA", "1111");
-    User user2 = new User("2", "userB", "2222");
-    User user3 = new User("3", "userC", "3333");
-    // OPERATE
     // CHECK
     userDao.deleteAll();
     assertThat(userDao.getCount(), is(0));
