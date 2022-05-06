@@ -43,6 +43,7 @@ public class RequestParamServlet extends HttpServlet {
       System.out.println("username=" + name);
     }
 
+    response.setStatus(HttpServletResponse.SC_OK);
     response.getWriter().write("ok");
   }
 }
