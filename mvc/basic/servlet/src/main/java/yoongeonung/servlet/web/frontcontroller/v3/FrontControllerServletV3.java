@@ -29,16 +29,15 @@ public class FrontControllerServletV3 extends HttpServlet {
   protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
-    Map<String, String> paramMap = createParamMap(req);
-
     String uri = req.getRequestURI();
     ControllerV3 controller = controllerMap.get(uri);
+    Map<String, String> paramMap = createParamMap(req);
 
     ModelView modelView = controller.process(paramMap);
 
     MyView view = viewResolver(modelView);
 
-    view.render(modelView.getModel(),req, resp);
+    view.render(modelView.getModel(), req, resp);
   }
 
   private Map<String, String> createParamMap(HttpServletRequest req) {
