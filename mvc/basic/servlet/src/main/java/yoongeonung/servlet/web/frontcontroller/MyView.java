@@ -33,6 +33,6 @@ public class MyView {
   }
 
   private void modelToRequestAttribute(Map<String, Object> model, HttpServletRequest req) {
-    model.forEach(req::setAttribute);
+    model.forEach((name, o) -> req.setAttribute(name, o));
   }
 }
