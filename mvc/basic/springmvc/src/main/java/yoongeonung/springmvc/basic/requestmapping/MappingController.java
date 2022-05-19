@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -102,6 +103,16 @@ public class MappingController {
   @PostMapping(value = "/mapping-produce", produces = MediaType.TEXT_PLAIN_VALUE)
   public String mappingProduces() {
     log.info("MappingController.mappingProduces");
+    return "ok";
+  }
+
+  /**
+   * "/mapping?userId=1212"
+   * query paramter형식에 사용
+   */
+  @GetMapping("/mapping")
+  public String test(@RequestParam String userId) {
+    log.info("userId = {} ", userId);
     return "ok";
   }
 }
