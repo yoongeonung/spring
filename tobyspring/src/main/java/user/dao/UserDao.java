@@ -11,7 +11,7 @@ public class UserDao {
 
   public void add(User user) throws ClassNotFoundException, SQLException {
     Class.forName("com.mysql.cj.jdbc.Driver");
-    Connection c = DriverManager.getConnection("jdbc:mysql://localhost/toby", "root",
+    Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/toby", "root",
         "00000000");
 
     PreparedStatement ps = c.prepareStatement(
@@ -47,6 +47,24 @@ public class UserDao {
     c.close();
 
     return user;
+  }
+
+  public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    UserDao dao = new UserDao();
+
+    User user = new User();
+    user.setId("whiteShip");
+    user.setName("yoon");
+    user.setPassword("junior");
+
+    dao.add(user);
+    System.out.println(user.getId() + " 등록 성공");
+
+    User findUser = dao.get(user.getId());
+    System.out.println("findUser.getName() = " + findUser.getName());
+    System.out.println("findUser.getPassword() = " + findUser.getPassword());
+
+    System.out.println(findUser.getId() + " 조회 성공");
   }
 
 }

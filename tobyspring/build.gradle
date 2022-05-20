@@ -20,7 +20,7 @@ dependencies {
     // lombok
     implementation 'org.projectlombok:lombok:1.18.22'
     // mysql
-    implementation 'mysql:mysql-connector-java:8.0.15'
+    implementation 'mysql:mysql-connector-java:8.0.16'
 }
 
 test {
