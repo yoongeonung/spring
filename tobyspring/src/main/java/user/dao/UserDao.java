@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.function.Supplier;
+import lombok.Builder;
 import user.domain.User;
 
 public class UserDao {
@@ -65,6 +67,11 @@ public class UserDao {
     System.out.println("findUser.getPassword() = " + findUser.getPassword());
 
     System.out.println(findUser.getId() + " 조회 성공");
+
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    return super.equals(obj);
+  }
 }
